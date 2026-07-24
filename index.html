@@ -400,10 +400,9 @@ async function sendMsg(text){
       const data=await resp.json();
       const blocks=data.content||[];
       const reply=blocks.filter(b=>b.type==='text').map(b=>b.text).join('');
-      if(reply){streamText(aiDiv,'[DeepSeek] '+reply,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
+      if(reply){streamText(aiDiv,reply,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
     }
-    console.log('DeepSeek API status:',resp.status);
-  }catch(e){console.log('DeepSeek error:',e.message)}
+  }
   // API失败降级到关键词匹配
   setTimeout(()=>{const ans=aiReply(t);streamText(aiDiv,ans,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()})},300);
 }
