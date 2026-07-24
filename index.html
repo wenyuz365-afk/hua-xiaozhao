@@ -13,6 +13,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 
 /* 品牌头 */
 .brand{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;text-align:center;padding:40px 20px 32px;border-radius:0 0 32px 32px}
+
+/* 顶部导航栏 + 返回键 */
+.navbar{display:flex;align-items:center;background:var(--primary);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:50;gap:12px}
+.navbar .back-btn{font-size:24px;cursor:pointer;padding:4px 8px;line-height:1;min-width:36px;text-align:center}
+.navbar .nav-title{font-size:17px;font-weight:600;flex:1}
+.navbar .nav-spacer{min-width:36px}
 .brand .logo{font-size:56px;margin-bottom:8px}
 .brand h1{font-size:32px;font-weight:700;letter-spacing:2px;margin-bottom:4px}
 .brand p{font-size:13px;opacity:.8}
@@ -167,11 +173,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 
 <!-- ===== 绑定账号 ===== -->
 <div class="page" id="page-bind">
-  <div class="brand" style="padding:32px 20px 24px">
-    <h1 style="font-size:22px">投递账号绑定</h1>
-    <p style="font-size:12px;margin-top:4px">绑定后可让AI查询你的投递进度</p>
-  </div>
-  <div class="card" id="bind-card">
+  <div class="navbar"><span class="back-btn" onclick="goBack()">←</span><span class="nav-title">投递账号绑定</span><span class="nav-spacer"></span></div>
+  <div class="card" id="bind-card" style="margin-top:12px">
     <div id="bind-form">
       <div style="font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.6">输入你投递时使用的手机号，绑定后AI可帮你实时查询投递状态和面试进度。</div>
       <input id="bind-phone" type="tel" placeholder="请输入手机号" style="width:100%;height:44px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:15px;margin-bottom:12px;box-sizing:border-box">
@@ -191,9 +194,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 
 <!-- ===== AI问答 ===== -->
 <div class="page" id="page-chat" style="display:flex;flex-direction:column">
-  <div style="padding:12px 16px;font-size:16px;font-weight:700;background:var(--card);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-    AI智能问答<span style="font-size:13px;color:var(--hint);cursor:pointer" onclick="clearChat()">清空对话</span>
-  </div>
+  <div class="navbar"><span class="back-btn" onclick="goBack()">←</span><span class="nav-title">AI智能问答</span><span style="font-size:13px;opacity:0.8;cursor:pointer" onclick="clearChat()">清空对话</span></div>
   <div class="chat-msg" id="chat-msgs" style="flex:1;overflow-y:auto">
     <div class="chat-empty" id="chat-empty">
       <div class="icon">🤖</div>
@@ -210,7 +211,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 
 <!-- ===== 应聘流程 ===== -->
 <div class="page" id="page-process">
-  <div style="display:flex;padding:10px 12px;gap:8px;background:var(--card);position:sticky;top:0;z-index:5">
+  <div class="navbar"><span class="back-btn" onclick="goBack()">←</span><span class="nav-title">应聘流程</span><span class="nav-spacer"></span></div>
+  <div style="display:flex;padding:10px 12px;gap:8px;background:var(--card);position:sticky;top:44px;z-index:5">
     <button class="qbtn" style="background:var(--primary);color:#fff" data-pt="campus" onclick="showProcess('campus',this)">秋招</button>
     <button class="qbtn" data-pt="fintech" onclick="showProcess('fintech',this)">Fintech</button>
     <button class="qbtn" data-pt="gtp" onclick="showProcess('gtp',this)">GTP管培</button>
@@ -221,17 +223,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 
 <!-- ===== FAQ ===== -->
 <div class="page" id="page-faq">
+  <div class="navbar"><span class="back-btn" onclick="goBack()">←</span><span class="nav-title">常见问题</span><span class="nav-spacer"></span></div>
   <div class="faq-cats" id="faq-cats"></div>
   <div id="faq-list"></div>
 </div>
 
 <!-- ===== 联系我们 ===== -->
 <div class="page" id="page-contact">
-  <div class="brand" style="padding:32px 20px 24px">
-    <h1 style="font-size:22px">联系我们</h1>
-    <p style="font-size:12px;margin-top:4px">如有疑问，可通过以下方式联系校招团队</p>
-  </div>
-  <div class="card"><div style="font-size:18px;font-weight:700;margin-bottom:8px">华泰证券股份有限公司</div><div class="info-row"><span class="lbl">成立时间</span><span>1991年</span></div><div class="info-row"><span class="lbl">上市情况</span><span style="text-align:right;max-width:60%">上海（A股）、香港（H股）、伦敦（GDR）三地上市</span></div></div>
+  <div class="navbar"><span class="back-btn" onclick="goBack()">←</span><span class="nav-title">联系我们</span><span class="nav-spacer"></span></div>
+  <div class="card" style="margin-top:12px"><div style="font-size:18px;font-weight:700;margin-bottom:8px">华泰证券股份有限公司</div><div class="info-row"><span class="lbl">成立时间</span><span>1991年</span></div><div class="info-row"><span class="lbl">上市情况</span><span style="text-align:right;max-width:60%">上海（A股）、香港（H股）、伦敦（GDR）三地上市</span></div></div>
   <div class="contact-item"><span class="ci">🌐</span><div style="flex:1"><div class="ct">招聘官网</div><div class="cv">job.htsc.com.cn</div></div><span class="act" onclick="copyText('https://job.htsc.com.cn')">复制</span></div>
   <div class="contact-item"><span class="ci">📧</span><div style="flex:1"><div class="ct">招聘邮箱</div><div class="cv">zhaopin.ht@htsc.com</div></div><span class="act" onclick="copyText('zhaopin.ht@htsc.com')">复制</span></div>
 </div>
@@ -381,7 +381,11 @@ function renderFAQ(cat){
     </div>`).join('');
 }
 
-// ============ HASH ROUTING (browser back button support) ============
+// back button: go to previous page or home
+function goBack(){
+  if(history.length>1&&document.referrer){history.back()}
+  else switchTab('home');
+} (browser back button support) ============
 let _switching=false;
 function switchTab(tab){
   _switching=true;
