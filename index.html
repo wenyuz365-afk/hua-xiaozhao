@@ -393,19 +393,16 @@ async function sendMsg(text){
   const now=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
 
-  // 优先调用云端大模型API（Vercel部署，24/7可用），失败则降级到本地关键词匹配
-  const LLM_API='https://vercel-df67b40wn-wenyu2.vercel.app/api/chat';
+  // 直接调用 DeepSeek API（浏览器直连，无需任何中转服务器）
   try{
-    const resp=await fetch(LLM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})});
+    const resp=await fetch('https://api.deepseek.com/anthropic/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'CLEANED_API_KEY','anthropic-version':'2023-06-01'},body:JSON.stringify({model:'deepseek-v4-pro',max_tokens:4096,messages:[{role:'system',content:'你是华小招，华泰证券校园招聘AI助手。回答简洁友好，200字以内。只回答校招问题。'},{role:'user',content:t}]})});
     if(resp.ok){
       const data=await resp.json();
-      if(data.reply&&!data.fallback){
-        streamText(aiDiv,data.reply,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});
-        return;
-      }
+      const reply=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+      if(reply){streamText(aiDiv,reply,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
     }
   }catch(e){}
-  // 降级到本地关键词匹配
+  // API失败降级到本地关键词匹配
   setTimeout(()=>{const ans=aiReply(t);streamText(aiDiv,ans,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()})},300);
 }
 function addMsg(role,content,time,streaming){
