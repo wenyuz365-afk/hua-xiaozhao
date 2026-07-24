@@ -145,7 +145,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
   <div class="brand">
     <div class="logo">🏛️</div>
     <h1>华小招</h1>
-    <p>华泰证券校园招聘AI助手 · 7×24小时在线 · v7</p>
+    <p>华泰证券校园招聘AI助手 · 7×24小时在线</p>
   </div>
 
   <div class="sec-title"><span class="st-icon">📌</span>招聘项目</div>
@@ -248,7 +248,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 // ============ DATA ============
 const projects=[
   {id:'campus',name:'秋季校园招聘',icon:'🎓',tagline:'面向2026届应届毕业生',targetAudience:'大陆院校2026年1月-7月毕业；港澳台及海外院校2025年7月-2026年6月毕业',location:'北京、上海、深圳、南京、香港、新加坡及全国各分公司',tags:['专业不限','实习考察'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'实习考察：12月-次年1月，录用：次年2月',applyUrl:'https://job.htsc.com.cn'},
-  {id:'fintech',name:'Fintech金融科技专场',icon:'💻',tagline:'信息技术/理工类优先，免实习直通Offer',targetAudience:'2026届及2027届毕业生，信息技术类、理工类专业优先',location:'北京、上海、深圳、南京',tags:['免实习考察','滚动招聘','IT/理工优先'],process:['网申','在线测评','专业面试','录用通知'],processTime:'免实习考察，录用时间提前',applyUrl:'https://job.htsc.com.cn'},
+  {id:'fintech',name:'Fintech金融科技专场',icon:'💻',tagline:'信息技术/理工类优先，免实习直通Offer',targetAudience:'2026届及2027届毕业生，信息技术类、理工类专业优先',location:'北京、上海、深圳、南京',tags:['免实习考察','录用提前','IT/理工优先'],process:['网申','在线测评','专业面试','录用通知'],processTime:'免实习考察，录用时间早于秋招',applyUrl:'https://job.htsc.com.cn'},
   {id:'gtp',name:'GTP跨境管培',icon:'🌏',tagline:'跨境轮岗，培养国际化金融人才',targetAudience:'大陆院校2027届毕业；港澳台及海外院校2025年7月-2027年6月毕业',location:'香港为主，跨境轮岗',tags:['跨境轮岗','精英培养'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'与秋招流程一致',applyUrl:'https://job.htsc.com.cn'}
 ];
 const processes={
@@ -259,7 +259,7 @@ const processes={
 const faqs=[
   {cat:'投递相关',q:'一次可以申请几个岗位？',a:'每位同学最多可以申请3个岗位，建议合理分配，选择最心仪的方向投递哦~'},
   {cat:'投递相关',q:'如何查询面试进度？',a:'登录华泰证券招聘官网 job.htsc.com.cn，进入"个人中心"即可实时查看申请进度和各环节状态。'},
-  {cat:'项目区别',q:'Fintech专场和秋招有什么区别？',a:'Fintech是金融科技人才专场，面向信息技术和理工类同学。最大的区别是免实习考察，录用时间也比秋招更早，直通Offer！其余环节与秋招一致。GTP管培流程与秋招一致。'},
+  {cat:'项目区别',q:'Fintech专场和秋招有什么区别？',a:'Fintech是金融科技人才专场，面向信息技术和理工类同学，最大的亮点是免实习考察，笔面试通过后直通Offer！秋招则面向所有专业，流程中包含实习考察环节。'},
   {cat:'项目区别',q:'GTP管培面向哪一届？',a:'GTP跨境管培面向大陆院校2027届毕业生，以及港澳台及海外院校2025年7月至2027年6月期间毕业的同学。'},
   {cat:'资格要求',q:'专业不对口可以投吗？',a:'当然可以！除Fintech专场建议信息技术/理工类优先外，秋招和GTP管培均为专业不限，我们更看重你的综合能力和发展潜力。'},
   {cat:'工作地点',q:'工作地点有哪些？',a:'总部位于北京、上海、深圳、南京、香港、新加坡等核心城市，分公司及营业部覆盖全国主要城市，总有一个适合你的地方~'}
@@ -273,10 +273,10 @@ const kb=[
   {kw:['公司','华泰','华泰证券','介绍','概况'],ans:'华泰证券是一家领先的科技驱动型综合证券集团，1991年成立，在上海、香港、伦敦三地上市。\n\n业务覆盖财富管理、机构服务、投资管理和国际业务四大板块。\n\n2025年确立"ALL IN AI"战略，推出AI原生交易终端"AI涨乐"，打造AI平台"泰为"。',pri:5},
   {kw:['招聘项目','有哪些项目','项目介绍'],ans:'华泰证券2026校园招聘共开放三大项目：\n\n🎓 秋季校园招聘\n面向2026届毕业生，专业不限，覆盖全国多个城市，含实习考察环节\n\n💻 Fintech金融科技专场\n面向2026-2027届，信息技术/理工类优先，免实习考察，直通Offer\n\n🌏 GTP跨境管培\n面向2027届（大陆），香港工作，跨境轮岗\n\n三个项目可以同时投递，总共最多申请3个岗位。',pri:10},
   {kw:['秋招','秋季校园招聘','校招'],ans:'秋季校园招聘\n\n📌 面向人群：大陆院校2026年1月-7月毕业；港澳台及海外院校2025年7月-2026年6月毕业\n\n📍 工作地点：北京、上海、深圳、南京、香港、新加坡及全国各分公司\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\n💡 特点：专业不限，全国覆盖',pri:9},
-  {kw:['fintech','金融科技','专场','fintech专场'],ans:'Fintech金融科技专场是面向金融科技人才的特招通道！\n\n📌 面向人群：2026届及2027届毕业生，信息技术类、理工类专业优先\n\n📍 工作地点：北京、上海、深圳、南京\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 录用通知（免实习考察，录用时间提前）\n\n🔥 核心特点：免实习考察，滚动招聘，先到先得，直通Offer！',pri:9},
+  {kw:['fintech','金融科技','专场','fintech专场'],ans:'Fintech金融科技专场是面向金融科技人才的特招通道！\n\n📌 面向人群：2026届及2027届毕业生，信息技术类、理工类专业优先\n\n📍 工作地点：北京、上海、深圳、南京\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 录用通知（免实习考察，录用时间提前）\n\n🔥 核心特点：免实习，录用早，滚动招聘，先到先得，直通Offer！',pri:9},
   {kw:['gtp','跨境','管培','管培生'],ans:'GTP跨境管培生项目\n\n📌 面向人群：\n• 大陆院校2027届毕业生\n• 港澳台及海外院校2025年7月-2027年6月期间毕业\n\n📍 工作地点：香港为主，跨境轮岗\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 实习考察 → 录用通知（与秋招流程一致）',pri:9},
   {kw:['投递','申请','几个','最多','怎么申请','如何投递'],ans:'关于投递规则：\n\n📌 申请数量：每位同学最多可以申请3个岗位\n\n📌 投递方式：登录华泰证券招聘官网 job.htsc.com.cn，选择心仪岗位在线投递\n\n📌 三个项目的关系：秋招、Fintech、GTP可以同时投递，互不影响，但总岗位数不超过3个。',pri:10},
-  {kw:['流程','应聘流程','招聘流程','步骤','面试流程'],ans:'华泰证券校招流程因项目不同而有差异：\n\n秋季校园招聘：\n网申(9-10月) → 在线测评(10-11月) → 专业面试(11-12月) → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\nFintech金融科技专场：\n与秋招流程一致，但免实习考察，录用时间提前\n网申 → 在线测评 → 专业面试 → 录用通知\n\nGTP跨境管培：\n与秋招流程一致\n网申 → 在线测评 → 专业面试 → 实习考察 → 录用通知',pri:8},
+  {kw:['流程','应聘流程','招聘流程','步骤','面试流程'],ans:'华泰证券校招流程因项目不同而有差异：\n\n秋季校园招聘：\n网申(9-10月) → 在线测评(10-11月) → 专业面试(11-12月) → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\nFintech金融科技专场：\n网申 → 在线测评 → 专业面试 → 录用通知（免实习考察，录用时间提前）\n\nGTP跨境管培：\n网申 → 在线测评 → 专业面试 → 实习考察 → 录用通知（与秋招流程一致）',pri:8},
   {kw:['面试','进度','查询','进展','状态'],ans:'查询面试进度的方法：\n\n登录华泰证券招聘官网 job.htsc.com.cn，进入"个人中心"即可实时查看申请进度和各环节状态。',pri:8},
   {kw:['毕业时间','毕业','应届','届','哪一届'],ans:'各项目的毕业时间要求如下：\n\n🎓 秋季校园招聘：大陆2026.1-2026.7毕业；港澳台及海外2025.7-2026.6毕业\n\n💻 Fintech专场：2026届及2027届均可\n\n🌏 GTP管培：大陆2027届；港澳台及海外2025.7-2027.6毕业\n\n⚠️ 港澳台及海外院校以学位证颁发时间为准。',pri:9},
   {kw:['工作地点','地点','城市','在哪','哪里'],ans:'工作地点：\n\n🏢 总部：北京、上海、深圳、南京、香港、新加坡\n\n🏢 分公司：覆盖全国主要城市',pri:8},
@@ -393,17 +393,16 @@ async function sendMsg(text){
   const now=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
 
-  // 直接调用 DeepSeek API
+  // 直接调用 DeepSeek API（浏览器直连，无需任何中转服务器）
   try{
-    const resp=await fetch('https://api.deepseek.com/anthropic/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'CLEANED_API_KEY','anthropic-version':'2023-06-01'},body:JSON.stringify({model:'deepseek-v4-pro',max_tokens:4096,messages:[{role:'system',content:'你是华小招，华泰证券校园招聘AI智能助手。回答简洁友好，200字以内。只回答校招相关问题。'},{role:'user',content:t}]})});
+    const resp=await fetch('https://api.deepseek.com/anthropic/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'CLEANED_API_KEY','anthropic-version':'2023-06-01'},body:JSON.stringify({model:'deepseek-v4-pro',max_tokens:4096,messages:[{role:'system',content:'你是华小招，华泰证券校园招聘AI助手。回答简洁友好，200字以内。只回答校招问题。'},{role:'user',content:t}]})});
     if(resp.ok){
       const data=await resp.json();
-      const blocks=data.content||[];
-      const reply=blocks.filter(b=>b.type==='text').map(b=>b.text).join('');
+      const reply=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
       if(reply){streamText(aiDiv,reply,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
     }
-  }
-  // API失败降级到关键词匹配
+  }catch(e){}
+  // API失败降级到本地关键词匹配
   setTimeout(()=>{const ans=aiReply(t);streamText(aiDiv,ans,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()})},300);
 }
 function addMsg(role,content,time,streaming){
