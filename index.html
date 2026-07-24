@@ -291,7 +291,7 @@ function aiReply(query){
   if(/^(你好|hi|hello|嗨|在吗|在不在)$/.test(q)) return '你好！我是华小招，华泰证券校招AI助手。你可以问我关于招聘项目、投递规则、应聘流程等方面的问题。';
   for(const f of faqs){if(similar(q,f.q)>0.75)return f.a;}
   let best=null,bestS=0;
-  for(const e of kb){let s=0;for(const k of e.kw){const kl=k.toLowerCase();if(q===kl)s+=40;else if(q.includes(kl))s+=20;else if(kl.includes(q)&&q.length>=2)s+=10}s+=e.pri*5;if(s>bestS){bestS=s;best=e}}
+  for(const e of kb){let s=0,hit=0;for(const k of e.kw){const kl=k.toLowerCase();if(q===kl){s+=40;hit=1}else if(q.includes(kl)){s+=20;hit=1}else if(kl.includes(q)&&q.length>=2){s+=10;hit=1}}if(hit){s+=e.pri*5;if(s>bestS){bestS=s;best=e}}}
   if(best&&bestS>=15){if(best.ans==='__STATUS__')return statusAnswer();return best.ans;}
   return '这个问题我暂时无法回答。你可以试试问我：\n\n• "招聘项目有哪些？"\n• "一次可以申请几个岗位？"\n• "Fintech专场有什么特点？"\n\n或者访问招聘官网 job.htsc.com.cn 获取更多信息。';
 }
@@ -386,13 +386,27 @@ function doUnbind(){if(!confirm('确定要解绑投递账号吗？'))return;loca
 // ============ CHAT ============
 let streaming=false;
 function goChat(q){switchTab('chat');sendMsg(q)}
-function sendMsg(text){
+async function sendMsg(text){
   if(streaming)return;const input=document.getElementById('chat-input');const t=(text||input.value).trim();if(!t)return;input.value='';
   streaming=true;document.getElementById('send-btn').disabled=true;document.getElementById('send-btn').classList.remove('ok');
   const empty=document.getElementById('chat-empty');if(empty)empty.style.display='none';
   const now=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
-  setTimeout(()=>{const ans=aiReply(t);streamText(aiDiv,ans,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()})},300+Math.random()*500);
+
+  // 优先调用云端大模型API（Vercel部署，24/7可用），失败则降级到本地关键词匹配
+  const LLM_API='https://vercel-df67b40wn-wenyu2.vercel.app/api/chat';
+  try{
+    const resp=await fetch(LLM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})});
+    if(resp.ok){
+      const data=await resp.json();
+      if(data.reply&&!data.fallback){
+        streamText(aiDiv,data.reply,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});
+        return;
+      }
+    }
+  }catch(e){}
+  // 降级到本地关键词匹配
+  setTimeout(()=>{const ans=aiReply(t);streamText(aiDiv,ans,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()})},300);
 }
 function addMsg(role,content,time,streaming){
   const msgs=document.getElementById('chat-msgs');const row=document.createElement('div');row.className='msg-row '+role;
