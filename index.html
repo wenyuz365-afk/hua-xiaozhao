@@ -161,7 +161,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
     <div class="nav-item" onclick="switchTab('process')"><span class="ni">📋</span><div class="nt">应聘流程</div><div class="nd">查看完整流程</div></div>
     <div class="nav-item" onclick="switchTab('faq')"><span class="ni">❓</span><div class="nt">常见问题</div><div class="nd">FAQ快速解答</div></div>
     <div class="nav-item" onclick="switchTab('contact')"><span class="ni">📞</span><div class="nt">联系我们</div><div class="nd">官方联系方式</div></div>
+    <div class="nav-item" onclick="switchTab('bind')"><span class="ni">🔗</span><div class="nt">绑定账号</div><div class="nd">查询投递状态</div></div>
   </div></div>
+</div>
+
+<!-- ===== 绑定账号 ===== -->
+<div class="page" id="page-bind">
+  <div class="brand" style="padding:32px 20px 24px">
+    <h1 style="font-size:22px">投递账号绑定</h1>
+    <p style="font-size:12px;margin-top:4px">绑定后可让AI查询你的投递进度</p>
+  </div>
+  <div class="card" id="bind-card">
+    <div id="bind-form">
+      <div style="font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.6">输入你投递时使用的手机号，绑定后AI可帮你实时查询投递状态和面试进度。</div>
+      <input id="bind-phone" type="tel" placeholder="请输入手机号" style="width:100%;height:44px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:15px;margin-bottom:12px;box-sizing:border-box">
+      <button onclick="doBind()" style="width:100%;height:44px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer">绑定</button>
+    </div>
+    <div id="bind-info" style="display:none">
+      <div class="info-row"><span class="lbl">手机号</span><span id="bind-phone-display"></span></div>
+      <div class="info-row"><span class="lbl">绑定时间</span><span id="bind-time-display"></span></div>
+      <div style="font-size:13px;color:#52C41A;margin-top:8px">✅ 已绑定 — AI可查询你的投递状态</div>
+      <div style="display:flex;gap:12px;margin-top:12px;justify-content:flex-end">
+        <span style="font-size:13px;color:var(--primary);cursor:pointer" onclick="doRebind()">重新绑定</span>
+        <span style="font-size:13px;color:var(--hint);cursor:pointer" onclick="doUnbind()">解绑</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== AI问答 ===== -->
@@ -217,6 +242,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
   <div class="tab" data-tab="chat" onclick="switchTab('chat')"><span class="ti">💬</span>AI问答</div>
   <div class="tab" data-tab="process" onclick="switchTab('process')"><span class="ti">📋</span>应聘流程</div>
   <div class="tab" data-tab="faq" onclick="swapToFAQ()"><span class="ti">❓</span>FAQ</div>
+  <div class="tab" data-tab="bind" onclick="switchTab('bind')"><span class="ti">🔗</span>绑定</div>
   <div class="tab" data-tab="contact" onclick="switchTab('contact')"><span class="ti">📞</span>联系</div>
 </div>
 
@@ -355,8 +381,10 @@ function renderFAQ(cat){
     </div>`).join('');
 }
 
-// ============ ACTIONS ============
+// ============ HASH ROUTING (browser back button support) ============
+let _switching=false;
 function switchTab(tab){
+  _switching=true;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const page=document.getElementById('page-'+tab);
   if(page)page.classList.add('active');
@@ -365,6 +393,57 @@ function switchTab(tab){
   if(tab==='process')renderProcess('campus');
   if(tab==='chat'){renderChatQuick();scrollChatBottom()}
   if(tab==='home')renderHome();
+  if(tab==='bind')renderBindPage();
+  if(location.hash!=='#'+tab) location.hash=tab;
+  window.scrollTo(0,0);
+  setTimeout(()=>{_switching=false},100);
+}
+window.addEventListener('hashchange',()=>{
+  if(_switching)return;
+  const tab=location.hash.replace('#','')||'home';
+  switchTab(tab);
+});
+
+// restore tab from hash on load
+(function(){
+  const tab=location.hash.replace('#','')||'home';
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelector(`.tab[data-tab="${tab}"]`)?.classList.add('on');
+})();
+
+// ============ BINDING ============
+function renderBindPage(){
+  const phone=localStorage.getItem('bindPhone');
+  if(phone){
+    document.getElementById('bind-form').style.display='none';
+    document.getElementById('bind-info').style.display='block';
+    document.getElementById('bind-phone-display').textContent=phone.slice(0,3)+'****'+phone.slice(-4);
+    document.getElementById('bind-time-display').textContent=localStorage.getItem('bindTime')||'—';
+  }else{
+    document.getElementById('bind-form').style.display='block';
+    document.getElementById('bind-info').style.display='none';
+    document.getElementById('bind-phone').value='';
+  }
+}
+function doBind(){
+  const v=document.getElementById('bind-phone').value.trim();
+  if(!/^1\d{10}$/.test(v)){showToast('请输入正确的手机号');return}
+  localStorage.setItem('bindPhone',v);
+  localStorage.setItem('bindTime',new Date().toLocaleString('zh-CN'));
+  renderBindPage();
+  showToast('绑定成功');
+}
+function doRebind(){
+  document.getElementById('bind-form').style.display='block';
+  document.getElementById('bind-info').style.display='none';
+  document.getElementById('bind-phone').value='';
+}
+function doUnbind(){
+  if(!confirm('确定要解绑吗？'))return;
+  localStorage.removeItem('bindPhone');
+  localStorage.removeItem('bindTime');
+  renderBindPage();
+  showToast('已解绑');
 }
 
 function swapToFAQ(){switchTab('faq');renderFAQ('全部')}
@@ -507,6 +586,12 @@ renderHome();
 renderFAQ('全部');
 renderProcess('campus');
 renderChatQuick();
+renderBindPage();
+// restore last tab from hash
+(function(){
+  const tab=location.hash.replace('#','')||'home';
+  if(tab!=='home')switchTab(tab);
+})();
 </script>
 </body>
 </html>
