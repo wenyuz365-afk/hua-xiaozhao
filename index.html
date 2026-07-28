@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=8')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;font-size:15px;color:var(--text);background:var(--bg);max-width:480px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;font-size:15px;color:var(--text);background:var(--bg);max-width:480px;margin:0 auto;min-height:100vh;overflow-x:hidden}
 .page{display:none;padding-bottom:80px;min-height:100vh}
 .page.active{display:block}
 
@@ -17,21 +18,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 .brand h1{font-size:32px;font-weight:700;letter-spacing:2px;margin-bottom:4px}
 .brand p{font-size:13px;opacity:.8}
 
+/* 板块标题 */
+.sec-title{font-size:18px;font-weight:700;color:var(--text);padding:20px 16px 8px;display:flex;align-items:center;gap:8px}
+.sec-title .st-icon{font-size:22px}
+
 /* 卡片 */
-.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin:12px 16px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin:8px 16px}
 .card-title{font-size:16px;font-weight:700;margin-bottom:12px}
 
-/* 聊天气泡卡片入口 */
-.chat-entry{margin:-16px 16px 0;position:relative;z-index:2;background:linear-gradient(135deg,#E6F0FA,#F0F6FD);border:1px solid rgba(0,102,204,.12);border-radius:16px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:var(--shadow)}
-.chat-entry:active{opacity:.8}
-.chat-entry .l{display:flex;align-items:center;gap:12px}
-.chat-entry .icon{font-size:40px}
-.chat-entry .t{font-size:16px;font-weight:600;color:var(--text)}
-.chat-entry .s{font-size:12px;color:var(--text2);margin-top:2px}
-.chat-entry .arr{font-size:28px;color:var(--primary)}
-
 /* 项目卡片 */
-.pcard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin:12px 16px;border-left:5px solid var(--primary);cursor:pointer}
+.pcard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin:8px 16px;border-left:5px solid var(--primary);cursor:pointer}
 .pcard.fintech{border-left-color:#1890FF}
 .pcard.gtp{border-left-color:#722ED1}
 .pcard:active{box-shadow:0 4px 20px rgba(0,0,0,.1)}
@@ -39,25 +35,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 .pcard .pi{font-size:32px}
 .pcard .pn{font-size:17px;font-weight:700}
 .pcard .pt{font-size:13px;color:var(--text2);margin-bottom:8px}
-.pcard .pm{font-size:12px;color:var(--text2);margin-bottom:8px;display:flex;align-items:flex-start;gap:4px}
+.pcard .pm{font-size:12px;color:var(--text2);margin-bottom:8px}
 .pcard .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
 .tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;background:var(--primary-light);color:var(--primary)}
 .pcard .more{text-align:right;font-size:13px;color:var(--primary)}
 
-/* 快捷按钮 */
-.quick{padding:4px 16px}
+/* 按钮 */
 .qbtn{display:inline-block;padding:8px 16px;margin:4px;font-size:13px;color:var(--primary);background:var(--primary-light);border:1px solid rgba(0,102,204,.12);border-radius:20px;cursor:pointer;white-space:nowrap}
 .qbtn:active{background:var(--primary);color:#fff}
 
-/* 导航网格 */
-.nav-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px}
-.nav-item{background:var(--card);border-radius:var(--radius);padding:16px 10px;text-align:center;box-shadow:var(--shadow);cursor:pointer}
-.nav-item:active{opacity:.7}
-.nav-item .ni{font-size:32px;margin-bottom:4px}
-.nav-item .nt{font-size:13px;font-weight:600}
-.nav-item .nd{font-size:11px;color:var(--hint)}
-
 /* 对话 */
+.chat-page{display:flex;flex-direction:column;height:100vh}
+.chat-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card);border-bottom:1px solid var(--border)}
+.chat-topbar .ctitle{font-size:16px;font-weight:700}
+.chat-clear{font-size:13px;color:var(--hint);cursor:pointer}
 .chat-msg{flex:1;overflow-y:auto;padding:12px 0}
 .msg-row{display:flex;padding:10px 16px;gap:8px;align-items:flex-start}
 .msg-row.user{flex-direction:row-reverse}
@@ -69,22 +60,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 .msg-row.user .bub{background:var(--primary);color:#fff;border-top-right-radius:2px}
 .msg-row .time{font-size:10px;color:var(--hint);margin-top:4px;text-align:right}
 .msg-row.user .time{color:rgba(255,255,255,.7)}
-
-/* 聊天空状态 */
-.chat-empty{text-align:center;padding:40px 20px}
+.chat-empty{text-align:center;padding:60px 20px}
 .chat-empty .icon{font-size:64px;margin-bottom:12px}
 .chat-empty h3{font-size:20px;margin-bottom:4px}
 .chat-empty p{font-size:13px;color:var(--text2);line-height:1.8}
-
-/* 聊天输入 */
-.chat-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);padding:10px 12px;z-index:100;display:flex;gap:8px;align-items:center}
+.chat-bar{background:var(--card);border-top:1px solid var(--border);padding:10px 12px;display:flex;gap:8px;align-items:center}
 .chat-bar input{flex:1;height:40px;border:none;background:var(--bg);border-radius:20px;padding:0 16px;font-size:14px;outline:none}
 .chat-bar .send{width:64px;height:36px;border-radius:18px;border:none;background:var(--border);color:var(--hint);font-size:13px;cursor:pointer;flex-shrink:0}
 .chat-bar .send.ok{background:var(--primary);color:#fff}
-.chat-bar .send:disabled{opacity:.5}
 
 /* FAQ */
-.faq-cats{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;position:sticky;top:0;background:var(--card);z-index:5}
+.faq-cats{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;position:sticky;top:0;background:var(--card);z-index:5}
 .faq-cat{padding:6px 16px;border-radius:16px;font-size:13px;white-space:nowrap;background:var(--bg);color:var(--text2);cursor:pointer;flex-shrink:0}
 .faq-cat.on{background:var(--primary);color:#fff}
 .faq-item{background:var(--card);border-radius:var(--radius);margin:8px 16px;padding:14px 16px;box-shadow:var(--shadow);cursor:pointer}
@@ -114,29 +100,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 .contact-item .cv{font-size:14px;color:var(--text);font-weight:500;word-break:break-all}
 .contact-item .act{font-size:13px;color:var(--primary);padding:6px 16px;border:1px solid var(--primary);border-radius:16px;cursor:pointer;flex-shrink:0}
 
+/* 个人主页 */
+.profile-header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;text-align:center;padding:36px 20px 28px}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.15);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:40px}
+.status-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin:8px 16px;overflow:hidden}
+.status-item{padding:16px;border-bottom:1px solid var(--border)}
+.status-item:last-child{border-bottom:none}
+.status-item .sj{font-size:15px;font-weight:600;margin-bottom:4px}
+.status-item .sp{font-size:12px;color:var(--text2)}
+.status-item .ss{display:inline-block;padding:4px 12px;border-radius:12px;font-size:12px;margin-top:8px}
+.ss.interview{background:#E6F7FF;color:#1890FF}
+.ss.done{background:#F6FFED;color:#52C41A}
+.ss.pending{background:#FFFBE6;color:#FAAD14}
+.info-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px}
+.info-row .lbl{color:var(--hint)}
+
 /* 底部Tab */
 .tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;display:flex;background:var(--card);border-top:1px solid var(--border);z-index:99}
-.tab{flex:1;text-align:center;padding:8px 0 6px;font-size:11px;color:var(--hint);cursor:pointer}
+.tab{flex:1;text-align:center;padding:8px 0 6px;font-size:12px;color:var(--hint);cursor:pointer}
 .tab.on{color:var(--primary)}
 .tab .ti{font-size:22px;display:block;margin-bottom:2px}
+@media(max-width:480px){body{max-width:100%}.tabs{max-width:100%;left:0;transform:none}}
 
 /* 弹窗 */
 .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
-.modal{background:#fff;border-radius:16px;padding:24px;width:85%;max-width:360px}
+.modal{background:#fff;border-radius:16px;padding:24px;width:85%;max-width:360px;max-height:80vh;overflow-y:auto}
 .modal h4{font-size:17px;margin-bottom:12px}
-.modal .info-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px}
-.modal .info-row .lbl{color:var(--hint)}
-.modal .btn-row{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
-.modal .btn{padding:8px 20px;border-radius:8px;font-size:13px;border:none;cursor:pointer}
-.modal .btn.pri{background:var(--primary);color:#fff}
-.modal .btn.sec{background:var(--bg);color:var(--text2)}
+.btn-row{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
+.btn{padding:8px 20px;border-radius:8px;font-size:13px;border:none;cursor:pointer}
+.btn.pri{background:var(--primary);color:#fff}
+.btn.sec{background:var(--bg);color:var(--text2)}
+.btn.danger{background:#fff;color:#FF4D4F;border:1px solid #FF4D4F}
 
-/* 提示 */
 .toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.75);color:#fff;padding:10px 24px;border-radius:8px;font-size:14px;z-index:999;display:none}
-
-/* 响应式 */
-@media(max-width:480px){body{max-width:100%}.tabs,.chat-bar{max-width:100%;left:0;transform:none}}
 
 .cursor{animation:blink 1s infinite}
 @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
@@ -144,130 +141,122 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </head>
 <body>
 
-<!-- ===== 首页 ===== -->
-<div class="page active" id="page-home">
+<!-- ===== 信息汇总 ===== -->
+<div class="page active" id="page-info">
   <div class="brand">
     <div class="logo">🏛️</div>
     <h1>华小招</h1>
     <p>华泰证券校园招聘AI助手 · 7×24小时在线</p>
   </div>
-  <div class="chat-entry" onclick="switchTab('chat')">
-    <div class="l"><span class="icon">🤖</span><div><div class="t">有什么可以帮你的？</div><div class="s">点击开始智能问答</div></div></div>
-    <span class="arr">→</span>
-  </div>
-  <div class="card" style="margin-top:20px"><div class="card-title">💬 快捷提问</div><div class="quick" id="quick-btns"></div></div>
-  <div class="card"><div class="card-title">📌 招聘项目</div><div id="project-cards"></div></div>
-  <div class="card"><div class="card-title">🔍 快速导航</div><div class="nav-grid">
-    <div class="nav-item" onclick="switchTab('process')"><span class="ni">📋</span><div class="nt">应聘流程</div><div class="nd">查看完整流程</div></div>
-    <div class="nav-item" onclick="switchTab('faq')"><span class="ni">❓</span><div class="nt">常见问题</div><div class="nd">FAQ快速解答</div></div>
-    <div class="nav-item" onclick="switchTab('contact')"><span class="ni">📞</span><div class="nt">联系我们</div><div class="nd">官方联系方式</div></div>
-    <div class="nav-item" onclick="switchTab('bind')"><span class="ni">🔗</span><div class="nt">绑定账号</div><div class="nd">查询投递状态</div></div>
-  </div></div>
-</div>
 
-<!-- ===== 绑定账号 ===== -->
-<div class="page" id="page-bind">
-  <div class="brand" style="padding:32px 20px 24px">
-    <h1 style="font-size:22px">投递账号绑定</h1>
-    <p style="font-size:12px;margin-top:4px">绑定后可让AI查询你的投递进度</p>
-  </div>
-  <div class="card" id="bind-card">
-    <div id="bind-form">
-      <div style="font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.6">输入你投递时使用的手机号，绑定后AI可帮你实时查询投递状态和面试进度。</div>
-      <input id="bind-phone" type="tel" placeholder="请输入手机号" style="width:100%;height:44px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:15px;margin-bottom:12px;box-sizing:border-box">
-      <button onclick="doBind()" style="width:100%;height:44px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer">绑定</button>
-    </div>
-    <div id="bind-info" style="display:none">
-      <div class="info-row"><span class="lbl">手机号</span><span id="bind-phone-display"></span></div>
-      <div class="info-row"><span class="lbl">绑定时间</span><span id="bind-time-display"></span></div>
-      <div style="font-size:13px;color:#52C41A;margin-top:8px">✅ 已绑定 — AI可查询你的投递状态</div>
-      <div style="display:flex;gap:12px;margin-top:12px;justify-content:flex-end">
-        <span style="font-size:13px;color:var(--primary);cursor:pointer" onclick="doRebind()">重新绑定</span>
-        <span style="font-size:13px;color:var(--hint);cursor:pointer" onclick="doUnbind()">解绑</span>
-      </div>
-    </div>
-  </div>
-</div>
+  <div class="sec-title"><span class="st-icon">📌</span>招聘项目</div>
+  <div id="project-cards"></div>
 
-<!-- ===== AI问答 ===== -->
-<div class="page" id="page-chat" style="display:flex;flex-direction:column">
-  <div style="padding:12px 16px;font-size:16px;font-weight:700;background:var(--card);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-    AI智能问答<span style="font-size:13px;color:var(--hint);cursor:pointer" onclick="clearChat()">清空对话</span>
+  <div class="sec-title"><span class="st-icon">📋</span>应聘流程</div>
+  <div style="display:flex;padding:6px 16px;gap:8px">
+    <button class="qbtn" style="background:var(--primary);color:#fff" data-pt="campus" onclick="switchProcess('campus',this)">秋招</button>
+    <button class="qbtn" data-pt="fintech" onclick="switchProcess('fintech',this)">Fintech</button>
+    <button class="qbtn" data-pt="gtp" onclick="switchProcess('gtp',this)">GTP管培</button>
   </div>
-  <div class="chat-msg" id="chat-msgs" style="flex:1;overflow-y:auto">
-    <div class="chat-empty" id="chat-empty">
-      <div class="icon">🤖</div>
-      <h3>华小招 AI助手</h3>
-      <p>我是你的校招智能助手，随时为你解答<br>华泰证券校园招聘相关问题</p>
-      <div style="margin-top:20px;text-align:left"><div style="font-size:13px;color:var(--hint);margin-bottom:8px">你可以这样问我：</div><div class="quick" id="chat-quick"></div></div>
-    </div>
-  </div>
-  <div class="chat-bar">
-    <input id="chat-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendMsg()">
-    <button class="send" id="send-btn" onclick="sendMsg()">发送</button>
-  </div>
-</div>
-
-<!-- ===== 应聘流程 ===== -->
-<div class="page" id="page-process">
-  <div style="display:flex;padding:10px 12px;gap:8px;background:var(--card);position:sticky;top:0;z-index:5">
-    <button class="qbtn" style="background:var(--primary);color:#fff" data-pt="campus" onclick="showProcess('campus',this)">秋招</button>
-    <button class="qbtn" data-pt="fintech" onclick="showProcess('fintech',this)">Fintech</button>
-    <button class="qbtn" data-pt="gtp" onclick="showProcess('gtp',this)">GTP管培</button>
-  </div>
-  <div style="padding:10px 16px;font-size:14px;color:var(--text2)" id="process-name"></div>
+  <div style="padding:4px 16px;font-size:13px;color:var(--text2)" id="process-name"></div>
   <div class="tl" id="timeline"></div>
-</div>
 
-<!-- ===== FAQ ===== -->
-<div class="page" id="page-faq">
+  <div class="sec-title"><span class="st-icon">❓</span>常见问题</div>
   <div class="faq-cats" id="faq-cats"></div>
   <div id="faq-list"></div>
-</div>
 
-<!-- ===== 联系我们 ===== -->
-<div class="page" id="page-contact">
-  <div class="brand" style="padding:32px 20px 24px">
-    <h1 style="font-size:22px">联系我们</h1>
-    <p style="font-size:12px;margin-top:4px">如有疑问，可通过以下方式联系校招团队</p>
-  </div>
+  <div class="sec-title"><span class="st-icon">📞</span>联系我们</div>
   <div class="card"><div style="font-size:18px;font-weight:700;margin-bottom:8px">华泰证券股份有限公司</div><div class="info-row"><span class="lbl">成立时间</span><span>1991年</span></div><div class="info-row"><span class="lbl">上市情况</span><span style="text-align:right;max-width:60%">上海（A股）、香港（H股）、伦敦（GDR）三地上市</span></div></div>
   <div class="contact-item"><span class="ci">🌐</span><div style="flex:1"><div class="ct">招聘官网</div><div class="cv">job.htsc.com.cn</div></div><span class="act" onclick="copyText('https://job.htsc.com.cn')">复制</span></div>
   <div class="contact-item"><span class="ci">📧</span><div style="flex:1"><div class="ct">招聘邮箱</div><div class="cv">zhaopin.ht@htsc.com</div></div><span class="act" onclick="copyText('zhaopin.ht@htsc.com')">复制</span></div>
+  <div style="height:20px"></div>
+</div>
+
+<!-- ===== AI助手 ===== -->
+<div class="page" id="page-chat">
+  <div class="chat-page">
+    <div class="chat-topbar"><span class="ctitle">🤖 华小招 AI助手</span><span class="chat-clear" onclick="clearChat()">清空</span></div>
+    <div class="chat-msg" id="chat-msgs">
+      <div class="chat-empty" id="chat-empty">
+        <div class="icon">🤖</div>
+        <h3>华小招 AI助手</h3>
+        <p>我是你的校招智能助手，随时为你解答<br>华泰证券校园招聘相关问题</p>
+        <div style="margin-top:20px;text-align:left"><div style="font-size:13px;color:var(--hint);margin-bottom:8px">你可以这样问我：</div><div id="chat-quick"></div></div>
+      </div>
+    </div>
+    <div class="chat-bar">
+      <input id="chat-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="send" id="send-btn" onclick="sendMsg()">发送</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 主页（个人） ===== -->
+<div class="page" id="page-me">
+  <div class="profile-header">
+    <div class="profile-avatar">👤</div>
+    <div style="font-size:20px;font-weight:700" id="me-name">同学你好</div>
+    <div style="font-size:13px;opacity:.7" id="me-phone-display">未绑定投递账号</div>
+  </div>
+
+  <!-- 投递状态 -->
+  <div class="sec-title"><span class="st-icon">📋</span>我的投递</div>
+  <div id="my-applications">
+    <div class="card" style="text-align:center;color:var(--hint)" id="no-bind-hint">
+      <div style="font-size:40px;margin-bottom:8px">🔗</div>
+      <div style="font-size:14px;margin-bottom:4px">尚未绑定投递账号</div>
+      <div style="font-size:12px">绑定后可查看投递状态和面试进度</div>
+      <button class="btn pri" style="margin-top:12px;width:100%" onclick="showBindModal()">绑定投递账号</button>
+    </div>
+  </div>
+
+  <!-- 快捷入口 -->
+  <div class="sec-title"><span class="st-icon">⚡</span>快捷操作</div>
+  <div class="card">
+    <div class="contact-item" style="margin:0;box-shadow:none;padding:12px 0;cursor:pointer" onclick="switchTab('chat')"><span class="ci">💬</span><div style="flex:1"><div style="font-size:14px;font-weight:500">AI智能问答</div><div style="font-size:12px;color:var(--hint)">向华小招提问</div></div><span style="color:var(--hint)">›</span></div>
+    <div class="contact-item" style="margin:0;box-shadow:none;padding:12px 0;border-top:1px solid var(--border);cursor:pointer" onclick="switchTab('info')"><span class="ci">📋</span><div style="flex:1"><div style="font-size:14px;font-weight:500">招聘信息</div><div style="font-size:12px;color:var(--hint)">查看项目、流程、FAQ</div></div><span style="color:var(--hint)">›</span></div>
+  </div>
+  <div style="height:20px"></div>
 </div>
 
 <!-- ===== 底部Tab ===== -->
 <div class="tabs">
-  <div class="tab on" data-tab="home" onclick="switchTab('home')"><span class="ti">🏠</span>首页</div>
-  <div class="tab" data-tab="chat" onclick="switchTab('chat')"><span class="ti">💬</span>AI问答</div>
-  <div class="tab" data-tab="process" onclick="switchTab('process')"><span class="ti">📋</span>应聘流程</div>
-  <div class="tab" data-tab="faq" onclick="swapToFAQ()"><span class="ti">❓</span>FAQ</div>
-  <div class="tab" data-tab="bind" onclick="switchTab('bind')"><span class="ti">🔗</span>绑定</div>
-  <div class="tab" data-tab="contact" onclick="switchTab('contact')"><span class="ti">📞</span>联系</div>
+  <div class="tab on" data-tab="info" onclick="switchTab('info')"><span class="ti">📋</span>信息汇总</div>
+  <div class="tab" data-tab="chat" onclick="switchTab('chat')"><span class="ti">🤖</span>华小招AI助手</div>
+  <div class="tab" data-tab="me" onclick="switchTab('me')"><span class="ti">👤</span>主页</div>
+</div>
+
+<!-- 绑定弹窗 -->
+<div class="modal-overlay" id="bind-modal">
+  <div class="modal">
+    <h4>绑定投递账号</h4>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:12px">输入投递时使用的手机号，即可查询投递状态</div>
+    <input id="bind-phone-input" type="tel" placeholder="请输入手机号" style="width:100%;height:44px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:15px;box-sizing:border-box">
+    <div class="btn-row">
+      <button class="btn sec" onclick="closeBindModal()">取消</button>
+      <button class="btn pri" onclick="doBind()">绑定</button>
+    </div>
+  </div>
 </div>
 
 <!-- 项目详情弹窗 -->
 <div class="modal-overlay" id="proj-modal">
   <div class="modal" id="proj-modal-content"></div>
 </div>
-
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
 // ============ DATA ============
 const projects=[
-  {id:'campus',name:'秋季校园招聘',icon:'🎓',color:'#0066CC',tagline:'面向2026届应届毕业生',targetAudience:'大陆院校2026年1月-7月毕业；港澳台及海外院校2025年7月-2026年6月毕业',location:'北京、上海、深圳、南京、香港、新加坡及全国各分公司',tags:['专业不限','实习考察'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'实习考察：12月-次年1月，录用：次年2月',applyUrl:'https://job.htsc.com.cn'},
-  {id:'fintech',name:'Fintech金融科技专场',icon:'💻',color:'#1890FF',tagline:'信息技术/理工类优先，免实习直通Offer',targetAudience:'2026届及2027届毕业生，信息技术类、理工类专业优先',location:'北京、上海、深圳、南京',tags:['免实习考察','滚动招聘','IT/理工优先'],process:['网申','在线笔试','专业面试','录用通知'],processTime:'滚动招聘，招满即止',applyUrl:'https://job.htsc.com.cn'},
-  {id:'gtp',name:'GTP跨境管培',icon:'🌏',color:'#722ED1',tagline:'跨境轮岗，培养国际化金融人才',targetAudience:'大陆院校2027届毕业；港澳台及海外院校2025年7月-2027年6月毕业',location:'香港为主，跨境轮岗',tags:['跨境轮岗','精英培养'],process:['网申','面试评估','录用通知'],processTime:'滚动招聘',applyUrl:'https://job.htsc.com.cn'}
+  {id:'campus',name:'秋季校园招聘',icon:'🎓',tagline:'面向2026届应届毕业生',targetAudience:'大陆院校2026年1月-7月毕业；港澳台及海外院校2025年7月-2026年6月毕业',location:'北京、上海、深圳、南京、香港、新加坡及全国各分公司',tags:['专业不限','实习考察'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'实习考察：12月-次年1月，录用：次年2月',applyUrl:'https://job.htsc.com.cn'},
+  {id:'fintech',name:'Fintech金融科技专场',icon:'💻',tagline:'信息技术/理工类优先，免实习直通Offer',targetAudience:'2026届及2027届毕业生，信息技术类、理工类专业优先',location:'北京、上海、深圳、南京',tags:['免实习考察','录用提前','IT/理工优先'],process:['网申','在线测评','专业面试','录用通知'],processTime:'免实习考察，录用时间早于秋招',applyUrl:'https://job.htsc.com.cn'},
+  {id:'gtp',name:'GTP跨境管培',icon:'🌏',tagline:'跨境轮岗，培养国际化金融人才',targetAudience:'大陆院校2027届毕业；港澳台及海外院校2025年7月-2027年6月毕业',location:'香港为主，跨境轮岗',tags:['跨境轮岗','精英培养'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'与秋招流程一致',applyUrl:'https://job.htsc.com.cn'}
 ];
-
 const processes={
   campus:{name:'秋季校园招聘流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网 job.htsc.com.cn 投递简历。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'11月-12月',desc:'测评通过后进入面试环节。'},{title:'实习考察',time:'12月-次年1月',desc:'通过面试的同学进入实习考察阶段。'},{title:'录用通知',time:'次年2月',desc:'考察通过后发放正式录用Offer。'}]},
-  fintech:{name:'Fintech金融科技专场流程',steps:[{title:'网申',time:'滚动开放',desc:'登录华泰证券招聘官网投递，滚动招聘，先到先得。'},{title:'在线笔试',time:'—',desc:'通过简历筛选后参加在线笔试。'},{title:'专业面试',time:'—',desc:'笔试通过后进入专业面试。'},{title:'录用通知',time:'—',desc:'面试通过后直接发放Offer，免实习考察。'}]},
-  gtp:{name:'GTP跨境管培流程',steps:[{title:'网申',time:'滚动开放',desc:'登录华泰证券招聘官网投递。'},{title:'面试评估',time:'—',desc:'通过简历筛选后进入面试评估环节。'},{title:'录用通知',time:'—',desc:'通过评估后发放Offer。'}]}
+  fintech:{name:'Fintech金融科技专场流程',steps:[{title:'网申',time:'滚动开放',desc:'登录华泰证券招聘官网投递，滚动招聘，先到先得。'},{title:'在线测评',time:'—',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'—',desc:'测评通过后进入专业面试。'},{title:'录用通知',time:'提前批次',desc:'面试通过后直接发放Offer，免实习考察，录用时间早于秋招。'}]},
+  gtp:{name:'GTP跨境管培流程',steps:[{title:'网申',time:'滚动开放',desc:'登录华泰证券招聘官网投递。'},{title:'在线测评',time:'—',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'—',desc:'测评通过后进入面试环节。'},{title:'实习考察',time:'—',desc:'通过面试的同学进入实习考察阶段。'},{title:'录用通知',time:'—',desc:'考察通过后发放正式录用Offer。'}]}
 };
-
 const faqs=[
   {cat:'投递相关',q:'一次可以申请几个岗位？',a:'每位同学最多可以申请3个岗位，建议合理分配，选择最心仪的方向投递哦~'},
   {cat:'投递相关',q:'如何查询面试进度？',a:'登录华泰证券招聘官网 job.htsc.com.cn，进入"个人中心"即可实时查看申请进度和各环节状态。'},
@@ -276,20 +265,19 @@ const faqs=[
   {cat:'资格要求',q:'专业不对口可以投吗？',a:'当然可以！除Fintech专场建议信息技术/理工类优先外，秋招和GTP管培均为专业不限，我们更看重你的综合能力和发展潜力。'},
   {cat:'工作地点',q:'工作地点有哪些？',a:'总部位于北京、上海、深圳、南京、香港、新加坡等核心城市，分公司及营业部覆盖全国主要城市，总有一个适合你的地方~'}
 ];
-
 const demoApps=[{jobTitle:'投资银行部分析师',project:'秋季校园招聘',applyTime:'2025-10-15',status:'专业面试中',statusDetail:'已完成两轮专业面试，等待终面通知',nextStep:'请留意邮件通知终面安排'}];
-
+const DEMO_PHONE='18856493686';
 const quickQs=['招聘项目有哪些？','一次可以申请几个岗位？','Fintech专场有什么特点？','秋招的应聘流程是怎样的？','工作地点有哪些城市？','我的投递到哪一步了？'];
 
-// ============ KNOWLEDGE BASE ============
+// ============ AI KNOWLEDGE ============
 const kb=[
   {kw:['公司','华泰','华泰证券','介绍','概况'],ans:'华泰证券是一家领先的科技驱动型综合证券集团，1991年成立，在上海、香港、伦敦三地上市。\n\n业务覆盖财富管理、机构服务、投资管理和国际业务四大板块。\n\n2025年确立"ALL IN AI"战略，推出AI原生交易终端"AI涨乐"，打造AI平台"泰为"。',pri:5},
   {kw:['招聘项目','有哪些项目','项目介绍'],ans:'华泰证券2026校园招聘共开放三大项目：\n\n🎓 秋季校园招聘\n面向2026届毕业生，专业不限，覆盖全国多个城市，含实习考察环节\n\n💻 Fintech金融科技专场\n面向2026-2027届，信息技术/理工类优先，免实习考察，直通Offer\n\n🌏 GTP跨境管培\n面向2027届（大陆），香港工作，跨境轮岗\n\n三个项目可以同时投递，总共最多申请3个岗位。',pri:10},
   {kw:['秋招','秋季校园招聘','校招'],ans:'秋季校园招聘\n\n📌 面向人群：大陆院校2026年1月-7月毕业；港澳台及海外院校2025年7月-2026年6月毕业\n\n📍 工作地点：北京、上海、深圳、南京、香港、新加坡及全国各分公司\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\n💡 特点：专业不限，全国覆盖',pri:9},
-  {kw:['fintech','金融科技','专场','fintech专场'],ans:'Fintech金融科技专场是面向金融科技人才的特招通道！\n\n📌 面向人群：2026届及2027届毕业生，信息技术类、理工类专业优先\n\n📍 工作地点：北京、上海、深圳、南京\n\n📋 招聘流程：网申 → 在线笔试 → 专业面试 → 录用通知（免实习）\n\n🔥 核心特点：免实习考察，滚动招聘，先到先得，直通Offer！',pri:9},
-  {kw:['gtp','跨境','管培','管培生'],ans:'GTP跨境管培生项目\n\n📌 面向人群：\n• 大陆院校2027届毕业生\n• 港澳台及海外院校2025年7月-2027年6月期间毕业\n\n📍 工作地点：香港为主，跨境轮岗\n\n📋 招聘流程：网申 → 面试评估 → 录用通知（滚动招聘）',pri:9},
+  {kw:['fintech','金融科技','专场','fintech专场'],ans:'Fintech金融科技专场是面向金融科技人才的特招通道！\n\n📌 面向人群：2026届及2027届毕业生，信息技术类、理工类专业优先\n\n📍 工作地点：北京、上海、深圳、南京\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 录用通知（免实习考察，录用时间提前）\n\n🔥 核心特点：免实习，录用早，滚动招聘，先到先得，直通Offer！',pri:9},
+  {kw:['gtp','跨境','管培','管培生'],ans:'GTP跨境管培生项目\n\n📌 面向人群：\n• 大陆院校2027届毕业生\n• 港澳台及海外院校2025年7月-2027年6月期间毕业\n\n📍 工作地点：香港为主，跨境轮岗\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 实习考察 → 录用通知（与秋招流程一致）',pri:9},
   {kw:['投递','申请','几个','最多','怎么申请','如何投递'],ans:'关于投递规则：\n\n📌 申请数量：每位同学最多可以申请3个岗位\n\n📌 投递方式：登录华泰证券招聘官网 job.htsc.com.cn，选择心仪岗位在线投递\n\n📌 三个项目的关系：秋招、Fintech、GTP可以同时投递，互不影响，但总岗位数不超过3个。',pri:10},
-  {kw:['流程','应聘流程','招聘流程','步骤','面试流程'],ans:'华泰证券校招流程因项目不同而有差异：\n\n秋季校园招聘：\n网申(9-10月) → 在线测评(10-11月) → 专业面试(11-12月) → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\nFintech金融科技专场：\n网申 → 在线笔试 → 专业面试 → 录用通知（免实习）\n\nGTP跨境管培：\n网申 → 面试评估 → 录用通知（滚动招聘）',pri:8},
+  {kw:['流程','应聘流程','招聘流程','步骤','面试流程'],ans:'华泰证券校招流程因项目不同而有差异：\n\n秋季校园招聘：\n网申(9-10月) → 在线测评(10-11月) → 专业面试(11-12月) → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\nFintech金融科技专场：\n网申 → 在线测评 → 专业面试 → 录用通知（免实习考察，录用时间提前）\n\nGTP跨境管培：\n网申 → 在线测评 → 专业面试 → 实习考察 → 录用通知（与秋招流程一致）',pri:8},
   {kw:['面试','进度','查询','进展','状态'],ans:'查询面试进度的方法：\n\n登录华泰证券招聘官网 job.htsc.com.cn，进入"个人中心"即可实时查看申请进度和各环节状态。',pri:8},
   {kw:['毕业时间','毕业','应届','届','哪一届'],ans:'各项目的毕业时间要求如下：\n\n🎓 秋季校园招聘：大陆2026.1-2026.7毕业；港澳台及海外2025.7-2026.6毕业\n\n💻 Fintech专场：2026届及2027届均可\n\n🌏 GTP管培：大陆2027届；港澳台及海外2025.7-2027.6毕业\n\n⚠️ 港澳台及海外院校以学位证颁发时间为准。',pri:9},
   {kw:['工作地点','地点','城市','在哪','哪里'],ans:'工作地点：\n\n🏢 总部：北京、上海、深圳、南京、香港、新加坡\n\n🏢 分公司：覆盖全国主要城市',pri:8},
@@ -299,299 +287,160 @@ const kb=[
   {kw:['我的','投递','到哪'],ans:'__STATUS__',pri:12}
 ];
 
-// ============ AI CHAT ENGINE ============
-const DEMO_PHONE='18856493686';
-let chatMsgs=[];
-
 function aiReply(query){
   const q=query.trim().toLowerCase();
-  // greeting
   if(/^(你好|hi|hello|嗨|在吗|在不在)$/.test(q)) return '你好！我是华小招，华泰证券校招AI助手。你可以问我关于招聘项目、投递规则、应聘流程等方面的问题。';
-
-  // exact FAQ match
   for(const f of faqs){if(similar(q,f.q)>0.75)return f.a;}
-
-  // keyword match
   let best=null,bestS=0;
-  for(const e of kb){
-    let s=0;
-    for(const k of e.kw){const kl=k.toLowerCase();if(q===kl)s+=40;else if(q.includes(kl))s+=20;else if(kl.includes(q)&&q.length>=2)s+=10}
-    s+=e.pri*5;
-    if(s>bestS){bestS=s;best=e}
-  }
-  if(best&&bestS>=15){
-    if(best.ans==='__STATUS__')return statusAnswer();
-    return best.ans;
-  }
+  for(const e of kb){let s=0,hit=0;for(const k of e.kw){const kl=k.toLowerCase();if(q===kl){s+=40;hit=1}else if(q.includes(kl)){s+=20;hit=1}else if(kl.includes(q)&&q.length>=2){s+=10;hit=1}}if(hit){s+=e.pri*5;if(s>bestS){bestS=s;best=e}}}
+  if(best&&bestS>=15){if(best.ans==='__STATUS__')return statusAnswer();return best.ans;}
   return '这个问题我暂时无法回答。你可以试试问我：\n\n• "招聘项目有哪些？"\n• "一次可以申请几个岗位？"\n• "Fintech专场有什么特点？"\n\n或者访问招聘官网 job.htsc.com.cn 获取更多信息。';
 }
-
 function statusAnswer(){
   const raw=localStorage.getItem('bindPhone');
-  if(!raw) return '你还没有绑定投递账号哦~\n\n请先在首页点击"绑定投递账号"绑定你的手机号，之后我就能帮你查询投递状态啦！';
-  if(raw!==DEMO_PHONE) return `未找到手机号 ${raw.slice(0,3)}****${raw.slice(-4)} 对应的投递记录。\n\n请确认绑定的手机号与投递时使用的一致。`;
-  const apps=demoApps;
-  let a=`📋 手机号 ${raw.slice(0,3)}****${raw.slice(-4)}，以下是你当前的投递状态：\n\n`;
-  apps.forEach((app,i)=>{a+=`${i+1}. ${app.jobTitle}\n   所属项目：${app.project}\n   投递时间：${app.applyTime}\n   当前状态：🔵 ${app.status}\n   详情：${app.statusDetail}\n   💡 ${app.nextStep}\n\n`});
-  a+='祝你求职顺利~';
-  return a;
+  if(!raw) return '你还没有绑定投递账号哦~\n\n请在"主页"绑定你的手机号，之后我就能帮你查询投递状态啦！';
+  if(raw!==DEMO_PHONE) return '未找到手机号 '+raw.slice(0,3)+'****'+raw.slice(-4)+' 对应的投递记录。\n\n请确认绑定的手机号与投递时使用的一致。';
+  let a='📋 手机号 '+raw.slice(0,3)+'****'+raw.slice(-4)+'，以下是你当前的投递状态：\n\n';
+  demoApps.forEach((app,i)=>{a+=`${i+1}. ${app.jobTitle}\n   所属项目：${app.project}\n   投递时间：${app.applyTime}\n   当前状态：🔵 ${app.status}\n   详情：${app.statusDetail}\n   💡 ${app.nextStep}\n\n`});
+  a+='祝你求职顺利~';return a;
 }
-
 function similar(a,b){const l=a.length>b.length?a:b;const s=a.length>b.length?b:a;if(!l.length)return 1;if(l.includes(s))return.85;let c=0;const set=new Set(s.split(''));for(const ch of l)if(set.has(ch))c++;return c/l.length}
 
 // ============ RENDER ============
-function renderHome(){
-  // quick buttons
-  document.getElementById('quick-btns').innerHTML=quickQs.map(q=>`<span class="qbtn" onclick="goChat('${q}')">${q}</span>`).join('');
-  // project cards
-  document.getElementById('project-cards').innerHTML=projects.map(p=>`
-    <div class="pcard ${p.id}" onclick="showProjectDetail('${p.id}')">
-      <div class="ph"><span class="pi">${p.icon}</span><span class="pn">${p.name}</span></div>
-      <div class="pt">${p.tagline}</div>
-      <div class="pm"><span>📍</span><span>${p.location}</span></div>
-      <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-      <div class="more">查看详情 →</div>
-    </div>`).join('');
-}
-
-function renderChatQuick(){
-  document.getElementById('chat-quick').innerHTML=quickQs.map(q=>`<span class="qbtn" onclick="goChat('${q}')">${q}</span>`).join('');
-}
-
+function renderProjectCards(){document.getElementById('project-cards').innerHTML=projects.map(p=>`
+  <div class="pcard ${p.id}" onclick="showProjectDetail('${p.id}')">
+    <div class="ph"><span class="pi">${p.icon}</span><span class="pn">${p.name}</span></div>
+    <div class="pt">${p.tagline}</div><div class="pm"><span>📍</span><span>${p.location}</span></div>
+    <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div><div class="more">查看详情 →</div>
+  </div>`).join('')}
 function renderProcess(type){
-  const p=processes[type||'campus'];
-  document.getElementById('process-name').textContent=p.name;
+  const p=processes[type||'campus'];document.getElementById('process-name').textContent=p.name;
   document.getElementById('timeline').innerHTML=p.steps.map((s,i,arr)=>`
-    <div class="tl-item">
-      <div class="tl-left"><div class="tl-dot">${i+1}</div>${i<arr.length-1?'<div class="tl-line"></div>':''}</div>
-      <div class="tl-body"><div class="ttl">${s.title}<span class="ttime">${s.time}</span></div><div class="tinfo">${s.desc}</div></div>
-    </div>`).join('');
-  // highlight active tab
-  document.querySelectorAll('#page-process button[data-pt]').forEach(b=>{b.style.background=b.dataset.pt===type?'var(--primary)':'';b.style.color=b.dataset.pt===type?'#fff':''});
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot">${i+1}</div>${i<arr.length-1?'<div class="tl-line"></div>':''}</div>
+    <div class="tl-body"><div class="ttl">${s.title}<span class="ttime">${s.time}</span></div><div class="tinfo">${s.desc}</div></div></div>`).join('');
 }
-
 function renderFAQ(cat){
   const cats=[...new Set(faqs.map(f=>f.cat))];
   document.getElementById('faq-cats').innerHTML='<span class="faq-cat'+(cat==='全部'?' on':'')+'" onclick="renderFAQ(\'全部\')">全部</span>'+cats.map(c=>`<span class="faq-cat${cat===c?' on':''}" onclick="renderFAQ('${c}')">${c}</span>`).join('');
-  const list=cat==='全部'?faqs:faqs.filter(f=>f.cat===cat);
-  document.getElementById('faq-list').innerHTML=list.map((f,i)=>`
-    <div class="faq-item" onclick="toggleFAQ(this)">
-      <div class="q"><span class="qtag">Q</span><span>${f.q}</span><span class="arr" id="faq-arr-${i}">›</span></div>
-      <div class="a" id="faq-a-${i}">${f.a}<div style="margin-top:8px"><span class="tag">${f.cat}</span></div></div>
-    </div>`).join('');
+  document.getElementById('faq-list').innerHTML=(cat==='全部'?faqs:faqs.filter(f=>f.cat===cat)).map(f=>`
+    <div class="faq-item" onclick="toggleFAQ(this)"><div class="q"><span class="qtag">Q</span><span>${f.q}</span><span class="arr">›</span></div>
+    <div class="a">${f.a}<div style="margin-top:8px"><span class="tag">${f.cat}</span></div></div></div>`).join('');
 }
+function renderMePage(){
+  const phone=localStorage.getItem('bindPhone');
+  if(phone){
+    document.getElementById('me-name').textContent='同学你好';
+    document.getElementById('me-phone-display').textContent=phone.slice(0,3)+'****'+phone.slice(-4)+' · 已绑定';
+    document.getElementById('no-bind-hint').style.display='none';
+    // render application status
+    document.getElementById('my-applications').innerHTML=demoApps.map(app=>`
+      <div class="status-card"><div class="status-item">
+        <div class="sj">${app.jobTitle}</div>
+        <div class="sp">${app.project} · 投递时间：${app.applyTime}</div>
+        <span class="ss interview">🔵 ${app.status}</span>
+        <div style="font-size:13px;color:var(--text2);margin-top:8px;line-height:1.6">${app.statusDetail}</div>
+        <div style="font-size:12px;color:var(--hint);margin-top:4px">💡 ${app.nextStep}</div>
+      </div></div>
+    `).join('')+'<div style="text-align:center;padding:12px"><span style="font-size:13px;color:var(--primary);cursor:pointer" onclick="doUnbind()">解绑账号</span></div>';
+  }else{
+    document.getElementById('me-name').textContent='同学你好';
+    document.getElementById('me-phone-display').textContent='未绑定投递账号';
+    document.getElementById('my-applications').innerHTML=`
+      <div class="card" style="text-align:center;color:var(--hint)" id="no-bind-hint">
+        <div style="font-size:40px;margin-bottom:8px">🔗</div>
+        <div style="font-size:14px;margin-bottom:4px">尚未绑定投递账号</div>
+        <div style="font-size:12px">绑定后可查看投递状态和面试进度</div>
+        <button class="btn pri" style="margin-top:12px;width:100%" onclick="showBindModal()">绑定投递账号</button>
+      </div>`;
+  }
+}
+function renderChatQuick(){document.getElementById('chat-quick').innerHTML=quickQs.map(q=>`<span class="qbtn" onclick="goChat('${q}')">${q}</span>`).join('')}
 
-// ============ HASH ROUTING (browser back button support) ============
+// ============ HASH ROUTING ============
 let _switching=false;
 function switchTab(tab){
   _switching=true;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const page=document.getElementById('page-'+tab);
-  if(page)page.classList.add('active');
+  const page=document.getElementById('page-'+tab);if(page)page.classList.add('active');
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelector(`.tab[data-tab="${tab}"]`)?.classList.add('on');
-  if(tab==='process')renderProcess('campus');
   if(tab==='chat'){renderChatQuick();scrollChatBottom()}
-  if(tab==='home')renderHome();
-  if(tab==='bind')renderBindPage();
+  if(tab==='me')renderMePage();
   if(location.hash!=='#'+tab) location.hash=tab;
   window.scrollTo(0,0);
   setTimeout(()=>{_switching=false},100);
 }
-window.addEventListener('hashchange',()=>{
-  if(_switching)return;
-  const tab=location.hash.replace('#','')||'home';
-  switchTab(tab);
-});
-
-// restore tab from hash on load
-(function(){
-  const tab=location.hash.replace('#','')||'home';
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.querySelector(`.tab[data-tab="${tab}"]`)?.classList.add('on');
-})();
+window.addEventListener('hashchange',()=>{if(_switching)return;switchTab(location.hash.replace('#','')||'info')});
 
 // ============ BINDING ============
-function renderBindPage(){
-  const phone=localStorage.getItem('bindPhone');
-  if(phone){
-    document.getElementById('bind-form').style.display='none';
-    document.getElementById('bind-info').style.display='block';
-    document.getElementById('bind-phone-display').textContent=phone.slice(0,3)+'****'+phone.slice(-4);
-    document.getElementById('bind-time-display').textContent=localStorage.getItem('bindTime')||'—';
-  }else{
-    document.getElementById('bind-form').style.display='block';
-    document.getElementById('bind-info').style.display='none';
-    document.getElementById('bind-phone').value='';
-  }
-}
+function showBindModal(){document.getElementById('bind-modal').classList.add('show')}
+function closeBindModal(){document.getElementById('bind-modal').classList.remove('show')}
+document.getElementById('bind-modal').addEventListener('click',function(e){if(e.target===this)closeBindModal()});
 function doBind(){
-  const v=document.getElementById('bind-phone').value.trim();
+  const v=document.getElementById('bind-phone-input').value.trim();
   if(!/^1\d{10}$/.test(v)){showToast('请输入正确的手机号');return}
-  localStorage.setItem('bindPhone',v);
-  localStorage.setItem('bindTime',new Date().toLocaleString('zh-CN'));
-  renderBindPage();
-  showToast('绑定成功');
+  localStorage.setItem('bindPhone',v);localStorage.setItem('bindTime',new Date().toLocaleString('zh-CN'));
+  closeBindModal();renderMePage();showToast('绑定成功');
 }
-function doRebind(){
-  document.getElementById('bind-form').style.display='block';
-  document.getElementById('bind-info').style.display='none';
-  document.getElementById('bind-phone').value='';
-}
-function doUnbind(){
-  if(!confirm('确定要解绑吗？'))return;
-  localStorage.removeItem('bindPhone');
-  localStorage.removeItem('bindTime');
-  renderBindPage();
-  showToast('已解绑');
-}
+function doUnbind(){if(!confirm('确定要解绑投递账号吗？'))return;localStorage.removeItem('bindPhone');localStorage.removeItem('bindTime');renderMePage();showToast('已解绑')}
 
-function swapToFAQ(){switchTab('faq');renderFAQ('全部')}
-
-function goChat(q){
-  switchTab('chat');
-  sendMsg(q);
-}
-
+// ============ CHAT ============
 let streaming=false;
-function sendMsg(text){
-  if(streaming)return;
-  const input=document.getElementById('chat-input');
-  const t=(text||input.value).trim();
-  if(!t)return;
-  input.value='';
-  streaming=true;
-  document.getElementById('send-btn').disabled=true;
-  document.getElementById('send-btn').classList.remove('ok');
-
-  // hide empty state
+function goChat(q){switchTab('chat');sendMsg(q)}
+async function sendMsg(text){
+  if(streaming)return;const input=document.getElementById('chat-input');const t=(text||input.value).trim();if(!t)return;input.value='';
+  streaming=true;document.getElementById('send-btn').disabled=true;document.getElementById('send-btn').classList.remove('ok');
   const empty=document.getElementById('chat-empty');if(empty)empty.style.display='none';
-
-  // add user msg
   const now=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
-  addMsg('user',t,now);
+  addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
 
-  // add ai placeholder
-  const aiDiv=addMsg('ai','',now,true);
-
-  // get reply
-  setTimeout(()=>{
-    const ans=aiReply(t);
-    streamText(aiDiv,ans,()=>{
-      streaming=false;
-      document.getElementById('send-btn').disabled=false;
-      updateSendBtn();
-      scrollChatBottom();
-    });
-  },300+Math.random()*500);
+  // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
+  var API_URL='__SCF_API_URL__';
+  try{
+    const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})});
+    if(resp.ok){
+      const data=await resp.json();
+      const reply=data.reply||(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+      if(reply){streamText(aiDiv,reply,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
+    }
+  }catch(e){}
+  // API失败降级到本地关键词匹配
+  setTimeout(()=>{const ans=aiReply(t);streamText(aiDiv,ans,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()})},300);
 }
-
 function addMsg(role,content,time,streaming){
-  const msgs=document.getElementById('chat-msgs');
-  const row=document.createElement('div');row.className='msg-row '+role;
+  const msgs=document.getElementById('chat-msgs');const row=document.createElement('div');row.className='msg-row '+role;
   const av=document.createElement('div');av.className='av';av.textContent=role==='ai'?'🤖':'👤';
-  const bub=document.createElement('div');bub.className='bub';
-  const txt=document.createElement('div');txt.style.whiteSpace='pre-wrap';
-  if(streaming)txt.innerHTML=content+'<span class="cursor">|</span>';
-  else txt.textContent=content;
+  const bub=document.createElement('div');bub.className='bub';const txt=document.createElement('div');txt.style.whiteSpace='pre-wrap';
+  if(streaming)txt.innerHTML=content+'<span class="cursor">|</span>';else txt.textContent=content;
   const tm=document.createElement('div');tm.className='time';tm.textContent=time;
-  bub.appendChild(txt);bub.appendChild(tm);
-  row.appendChild(av);row.appendChild(bub);
-  msgs.appendChild(row);
-  scrollChatBottom();
-  return txt;
+  bub.appendChild(txt);bub.appendChild(tm);row.appendChild(av);row.appendChild(bub);msgs.appendChild(row);scrollChatBottom();return txt;
 }
-
 function streamText(el,fullText,cb){
   let i=0;el.innerHTML='<span class="cursor">|</span>';
-  const timer=setInterval(()=>{
-    if(i<fullText.length){
-      const chunk=fullText.slice(i,i+(Math.random()>0.5?2:1));
-      i+=chunk.length;
-      el.innerHTML=el.innerHTML.replace('<span class="cursor">|</span>','')+chunk+'<span class="cursor">|</span>';
-      scrollChatBottom();
-    }else{
-      clearInterval(timer);
-      el.innerHTML=fullText;
-      if(cb)cb();
-    }
-  },25+Math.random()*20);
+  const timer=setInterval(()=>{if(i<fullText.length){const chunk=fullText.slice(i,i+(Math.random()>0.5?2:1));i+=chunk.length;el.innerHTML=el.innerHTML.replace('<span class="cursor">|</span>','')+chunk+'<span class="cursor">|</span>';scrollChatBottom()}else{clearInterval(timer);el.innerHTML=fullText;if(cb)cb()}},25+Math.random()*20);
 }
+function clearChat(){if(document.querySelectorAll('#chat-msgs .msg-row').length===0)return;if(!confirm('确定要清空所有对话记录吗？'))return;document.getElementById('chat-msgs').innerHTML='<div class="chat-empty" id="chat-empty"><div class="icon">🤖</div><h3>华小招 AI助手</h3><p>我是你的校招智能助手，随时为你解答<br>华泰证券校园招聘相关问题</p><div style="margin-top:20px;text-align:left"><div style="font-size:13px;color:var(--hint);margin-bottom:8px">你可以这样问我：</div><div id="chat-quick"></div></div></div>';renderChatQuick()}
+function scrollChatBottom(){const el=document.getElementById('chat-msgs');setTimeout(()=>{el.scrollTop=el.scrollHeight},100)}
+function updateSendBtn(){const v=document.getElementById('chat-input').value.trim();const btn=document.getElementById('send-btn');if(v)btn.classList.add('ok');else btn.classList.remove('ok')}
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('chat-input').addEventListener('input',updateSendBtn)});
 
-function clearChat(){
-  if(!chatMsgs.length&&document.querySelectorAll('#chat-msgs .msg-row').length===0)return;
-  if(!confirm('确定要清空所有对话记录吗？'))return;
-  document.getElementById('chat-msgs').innerHTML='<div class="chat-empty" id="chat-empty"><div class="icon">🤖</div><h3>华小招 AI助手</h3><p>我是你的校招智能助手，随时为你解答<br>华泰证券校园招聘相关问题</p><div style="margin-top:20px;text-align:left"><div style="font-size:13px;color:var(--hint);margin-bottom:8px">你可以这样问我：</div><div class="quick" id="chat-quick"></div></div></div>';
-  renderChatQuick();
-}
-
-function scrollChatBottom(){
-  const el=document.getElementById('chat-msgs');
-  setTimeout(()=>{el.scrollTop=el.scrollHeight},100);
-}
-
-function updateSendBtn(){
-  const v=document.getElementById('chat-input').value.trim();
-  const btn=document.getElementById('send-btn');
-  if(v){btn.classList.add('ok')}else{btn.classList.remove('ok')}
-}
-document.getElementById('chat-input').addEventListener('input',updateSendBtn);
-
+// ============ PROCESS / FAQ / MODAL ============
+function switchProcess(type,btn){renderProcess(type);document.querySelectorAll('#page-info button[data-pt]').forEach(b=>{b.style.background='';b.style.color=''});btn.style.background='var(--primary)';btn.style.color='#fff'}
+function toggleFAQ(el){const a=el.querySelector('.a');const arr=el.querySelector('.arr');a.classList.toggle('show');arr.classList.toggle('open')}
 function showProjectDetail(id){
   const p=projects.find(x=>x.id===id);if(!p)return;
-  document.getElementById('proj-modal-content').innerHTML=`
-    <div style="text-align:center;font-size:48px;margin-bottom:8px">${p.icon}</div>
-    <h4 style="text-align:center">${p.name}</h4>
-    <p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:12px">${p.tagline}</p>
-    <div class="info-row"><span class="lbl">👥 面向人群</span></div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:8px">${p.targetAudience}</div>
-    <div class="info-row"><span class="lbl">📍 工作地点</span></div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:8px">${p.location}</div>
-    <div style="margin-bottom:8px"><span class="lbl">🏷️ 特点</span></div>
-    <div class="tags" style="margin-bottom:8px">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-    <div style="margin-bottom:4px"><span class="lbl">📋 应聘流程</span></div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:4px">${p.process.map((s,i)=>`${i+1}.${s}`).join(' → ')}</div>
-    <div style="font-size:12px;color:var(--hint);margin-bottom:12px">${p.processTime}</div>
-    <div class="btn-row"><button class="btn sec" onclick="closeModal()">关闭</button><button class="btn pri" onclick="copyText('${p.applyUrl}');closeModal()">复制投递链接</button></div>`;
+  document.getElementById('proj-modal-content').innerHTML=`<div style="text-align:center;font-size:48px;margin-bottom:8px">${p.icon}</div><h4 style="text-align:center">${p.name}</h4><p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:12px">${p.tagline}</p><div class="info-row"><span class="lbl">👥 面向人群</span></div><div style="font-size:13px;color:var(--text2);margin-bottom:8px">${p.targetAudience}</div><div class="info-row"><span class="lbl">📍 工作地点</span></div><div style="font-size:13px;color:var(--text2);margin-bottom:8px">${p.location}</div><div style="margin-bottom:8px"><span class="lbl">🏷️ 特点</span></div><div class="tags" style="margin-bottom:8px">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div><div style="margin-bottom:4px"><span class="lbl">📋 应聘流程</span></div><div style="font-size:13px;color:var(--text2);margin-bottom:4px">${p.process.map((s,i)=>`${i+1}.${s}`).join(' → ')}</div><div style="font-size:12px;color:var(--hint);margin-bottom:12px">${p.processTime}</div><div class="btn-row"><button class="btn sec" onclick="closeProjModal()">关闭</button><button class="btn pri" onclick="copyText('${p.applyUrl}');closeProjModal()">复制投递链接</button></div>`;
   document.getElementById('proj-modal').classList.add('show');
 }
+function closeProjModal(){document.getElementById('proj-modal').classList.remove('show')}
+document.getElementById('proj-modal').addEventListener('click',function(e){if(e.target===this)closeProjModal()});
 
-function closeModal(){document.getElementById('proj-modal').classList.remove('show')}
-document.getElementById('proj-modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
-
-function showProcess(type,btn){
-  renderProcess(type);
-  document.querySelectorAll('#page-process button[data-pt]').forEach(b=>{b.style.background='';b.style.color=''});
-  btn.style.background='var(--primary)';btn.style.color='#fff';
-}
-
-function toggleFAQ(el){
-  const a=el.querySelector('.a');
-  const arr=el.querySelector('.arr');
-  a.classList.toggle('show');arr.classList.toggle('open');
-}
-
-function copyText(text){
-  if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>showToast('已复制'))}
-  else{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('已复制')}
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';
-  setTimeout(()=>{t.style.display='none'},1500);
-}
+function copyText(text){if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>showToast('已复制'))}else{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('已复制')}}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>{t.style.display='none'},1500)}
 
 // ============ INIT ============
-renderHome();
-renderFAQ('全部');
-renderProcess('campus');
-renderChatQuick();
-renderBindPage();
-// restore last tab from hash
-(function(){
-  const tab=location.hash.replace('#','')||'home';
-  if(tab!=='home')switchTab(tab);
-})();
+renderProjectCards();renderProcess('campus');renderFAQ('全部');renderMePage();renderChatQuick();
+(function(){const tab=location.hash.replace('#','')||'info';if(tab!=='info')switchTab(tab)})();
 </script>
 </body>
 </html>
