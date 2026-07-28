@@ -273,8 +273,7 @@ const FIXED_ANSWERS={
 '一次可以申请几个岗位？':'每位同学最多可以申请 3个 岗位。秋招、Fintech、GTP三个项目可以同时投递，互不影响，但总岗位数不超过3个。建议合理分配，选择最心仪的方向~',
 'Fintech专场有什么特点？':'Fintech金融科技专场的核心特点：\n\n🔥 免实习考察 — 面试通过直发Offer，录用时间早于秋招\n💻 IT/理工优先 — 面向2026届及2027届\n📍 核心城市 — 北京、上海、深圳、南京\n🔄 滚动招聘 — 招满即止，建议尽早投递',
 '秋招的应聘流程是怎样的？':'秋季校园招聘流程：\n\n网申（9-10月）→ 在线测评（10-11月）→ 专业面试（11-12月）→ 实习考察（12月-次年1月）→ 录用通知（次年2月）\n\n面向2026届毕业生，专业不限，覆盖全国及海外多个城市。',
-'工作地点有哪些城市？':'华泰证券工作地点覆盖：\n\n🏢 总部及核心城市：北京、上海、深圳、南京、香港、新加坡\n🏢 分公司：覆盖全国主要城市\n\n具体岗位的工作地点请查看官网 job.htsc.com.cn 的岗位详情。',
-'我的投递到哪一步了？':'查询投递进度的方式：\n\n1. 登录华泰证券招聘官网 job.htsc.com.cn\n2. 进入「个人中心」即可查看实时申请进度\n3. 也可以在「主页」绑定手机号，之后问我就能帮你查~'
+'工作地点有哪些城市？':'华泰证券工作地点覆盖：\n\n🏢 总部及核心城市：北京、上海、深圳、南京、香港、新加坡\n🏢 分公司：覆盖全国主要城市\n\n具体岗位的工作地点请查看官网 job.htsc.com.cn 的岗位详情。'
 };
 
 // ============ AI KNOWLEDGE ============
@@ -402,7 +401,8 @@ async function sendMsg(text){
   const now=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
 
-  // 6个导航栏快捷问题用固定答案，其余走AI
+  // 导航栏快捷问题：固定答案（投递状态动态查询）
+  if(t==='我的投递到哪一步了？'){streamText(aiDiv,statusAnswer(),()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   if(FIXED_ANSWERS[t]){streamText(aiDiv,FIXED_ANSWERS[t],()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
   var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
