@@ -395,7 +395,7 @@ async function sendMsg(text){
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
 
   // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
-  var API_URL='__SCF_API_URL__';
+  var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
   try{
     const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})});
     if(resp.ok){
