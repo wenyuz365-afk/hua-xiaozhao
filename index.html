@@ -197,8 +197,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
     <div class="profile-avatar">👤</div>
     <div style="font-size:20px;font-weight:700" id="me-name">同学你好</div>
     <div style="font-size:13px;opacity:.7" id="me-phone-display">未绑定投递账号</div>
+            document.getElementById('my-resume').innerHTML='';
             document.getElementById('job-recommendations').innerHTML='';
   </div>
+
+  <!-- 我的简历 -->
+  <div class="sec-title"><span class="st-icon">📄</span>我的简历</div>
+  <div id="my-resume"></div>
 
   <!-- 投递状态 -->
   <div class="sec-title"><span class="st-icon">📋</span>我的投递</div>
@@ -390,6 +395,17 @@ function renderRecommendCards(phone){
   top3.forEach((r,i)=>{const j=r.job;h+=`<div class="card" style="border-left:4px solid ${c[i]};margin-bottom:8px"><div style="font-weight:700;font-size:15px;margin-bottom:4px">${i+1}. ${j.title}</div><div class="sp">${j.project==='Fintech'?'Fintech金融科技专场':j.project==='秋招'?'秋季校园招聘':'GTP跨境管培'} · ${j.city} · ${j.degree}</div><div style="font-size:13px;color:var(--text2);margin-top:4px;line-height:1.6">${j.desc}</div><div style="margin-top:6px"><span style="display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;background:${c[i]}20;color:${c[i]};font-weight:600">匹配度 ${r.score}分</span></div></div>`});
   return h;
 }
+function renderResumeCard(phone){
+  const r=RESUME_DATA[phone];if(!r)return'<div class="card" style="text-align:center;color:var(--hint)">暂无简历数据，请先在官网完善简历</div>';
+  let h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-weight:700;font-size:16px">'+r.name+'</div><div style="font-size:12px;color:var(--hint)">'+r.gender+' · '+r.email+'</div></div>';
+  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin-bottom:8px">📚 教育背景</div>';
+  r.education.forEach(e=>{h+=`<div style="font-size:13px;margin-bottom:6px;line-height:1.6"><span style="font-weight:600">${e.degree}</span> · ${e.school}<br>${e.major} · ${e.time} · GPA ${e.gpa}</div>`});
+  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin:8px 0">🛠 专业技能</div>';
+  h+='<div style="font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:8px">'+r.skills+'</div>';
+  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin:8px 0">💼 实习经历</div>';
+  r.internships.forEach(x=>{h+=`<div style="font-size:13px;margin-bottom:6px;line-height:1.6"><span style="font-weight:600">${x.role}</span> · ${x.company}<br><span style="font-size:11px;color:var(--hint)">${x.time}</span><br><span style="font-size:12px;color:var(--text2)">${x.desc}</span></div>`});
+  return h+'</div>';
+}
 
 // ============ RENDER ============
 function renderProjectCards(){document.getElementById('project-cards').innerHTML=projects.map(p=>`
@@ -428,9 +444,11 @@ function renderMePage(){
       </div></div>
     `).join('')+'<div style="text-align:center;padding:12px"><span style="font-size:13px;color:var(--primary);cursor:pointer" onclick="doUnbind()">解绑账号</span></div>';
             document.getElementById('job-recommendations').innerHTML=renderRecommendCards(phone);
+            document.getElementById('my-resume').innerHTML=renderResumeCard(phone);
   }else{
     document.getElementById('me-name').textContent='同学你好';
     document.getElementById('me-phone-display').textContent='未绑定投递账号';
+            document.getElementById('my-resume').innerHTML='';
             document.getElementById('job-recommendations').innerHTML='';
     document.getElementById('my-applications').innerHTML=`
       <div class="card" style="text-align:center;color:var(--hint)" id="no-bind-hint">
