@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=10')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=11')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -394,14 +394,31 @@ function renderRecommendCards(phone){
 }
 function renderResumeCard(phone){
   const r=RESUME_DATA[phone];if(!r)return'<div class="card" style="text-align:center;color:var(--hint)">暂无简历数据，请先在官网完善简历</div>';
-  let h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-weight:700;font-size:16px">'+r.name+'</div><div style="font-size:12px;color:var(--hint)">'+r.gender+' · '+r.email+'</div></div>';
-  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin-bottom:8px">📚 教育背景</div>';
+  const id='resume-'+Date.now();
+  let h='<div class="card" id="'+id+'">';
+  // 摘要行（可点击展开）
+  const latestEdu=r.education[0];
+  h+='<div onclick="toggleResume(\''+id+'\')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">';
+  h+='<div><div style="font-weight:700;font-size:16px">'+r.name+'</div><div style="font-size:12px;color:var(--text2);margin-top:2px">'+latestEdu.school+' · '+latestEdu.major+' · '+latestEdu.degree+'</div></div>';
+  h+='<span class="resume-arr" style="font-size:20px;color:var(--hint);transition:transform .3s">›</span></div>';
+  // 详情区（默认折叠）
+  h+='<div class="resume-detail" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">';
+  h+='<div style="font-size:12px;color:var(--hint);margin-bottom:8px">'+r.gender+' · '+r.email+'</div>';
+  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin-bottom:6px">📚 教育背景</div>';
   r.education.forEach(e=>{h+=`<div style="font-size:13px;margin-bottom:6px;line-height:1.6"><span style="font-weight:600">${e.degree}</span> · ${e.school}<br>${e.major} · ${e.time} · GPA ${e.gpa}</div>`});
-  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin:8px 0">🛠 专业技能</div>';
+  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin:8px 0 6px">🛠 专业技能</div>';
   h+='<div style="font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:8px">'+r.skills+'</div>';
-  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin:8px 0">💼 实习经历</div>';
+  h+='<div style="font-size:13px;color:var(--primary);font-weight:600;margin:8px 0 6px">💼 实习经历</div>';
   r.internships.forEach(x=>{h+=`<div style="font-size:13px;margin-bottom:6px;line-height:1.6"><span style="font-weight:600">${x.role}</span> · ${x.company}<br><span style="font-size:11px;color:var(--hint)">${x.time}</span><br><span style="font-size:12px;color:var(--text2)">${x.desc}</span></div>`});
+  h+='</div>';
   return h+'</div>';
+}
+function toggleResume(id){
+  const card=document.getElementById(id);
+  const detail=card.querySelector('.resume-detail');
+  const arr=card.querySelector('.resume-arr');
+  if(detail.style.display==='none'){detail.style.display='block';arr.style.transform='rotate(90deg)';}
+  else{detail.style.display='none';arr.style.transform='rotate(0)';}
 }
 
 // ============ RENDER ============
