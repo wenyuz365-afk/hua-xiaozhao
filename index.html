@@ -346,33 +346,40 @@ function similar(a,b){const l=a.length>b.length?a:b;const s=a.length>b.length?b:
 function matchJobs(phone){
   const resume=RESUME_DATA[phone];if(!resume)return null;
   const edu=resume.education[0];
+  const related={'人工智能':'计算机,软件工程,数学','计算机科学与技术':'计算机,软件工程','数据科学':'计算机,统计学','软件工程':'计算机,软件工程','统计学':'数学,统计学','金融':'金融,经济','经济学':'金融,经济'};
   const results=JOB_DB.map(job=>{
     let score=0;
-    // 专业匹配(25分)
-    if(job.majors==='专业不限')score+=15;
-    else if(job.majors.split(',').some(m=>edu.major.includes(m)))score+=25;
-    else if(job.majors.split(',').some(m=>edu.major.includes(m.slice(0,3))))score+=12;
-    // 学历匹配(20分)
-    if(job.degree.includes('及以上')&&edu.degree==='硕士')score+=20;
-    else if(job.degree.includes(edu.degree))score+=20;
-    else if(job.degree.includes('本科')&&edu.degree==='硕士')score+=18;
-    // 技能匹配(25分)
+    // 专业匹配(30分)
+    if(job.majors==='专业不限')score+=18;
+    else{const reqs=job.majors.split(',');let best=0;
+      for(const r of reqs){if(edu.major.includes(r)){best=30;break}
+        const rel=(related[edu.major]||'').split(',');if(rel.some(x=>r.includes(x)))best=Math.max(best,22);}
+      score+=best;}
+    // 学历匹配(25分)
+    if(job.degree.includes('及以上')&&edu.degree==='硕士')score+=25;
+    else if(job.degree.includes(edu.degree))score+=25;
+    else if(job.degree.includes('本科')&&edu.degree==='硕士')score+=22;
+    // 技能匹配(30分)
     const skills=resume.skills;let skillHits=0;
     ['Python','Java','C++','SQL','PyTorch','TensorFlow','Docker','Git','LangChain'].forEach(s=>{if(skills.includes(s))skillHits++});
-    score+=Math.min(25,skillHits*3);
-    // 城市匹配(20分)
-    const prefCities=['北京','南京'];
-    if(job.city.split(',').some(c=>prefCities.includes(c)))score+=20;
-    else if(job.city==='全国')score+=10;
-    // 项目匹配(10分)
-    if(job.project==='Fintech')score+=10;
-    else if(job.project==='秋招')score+=5;
-    return{job,score:Math.round(score*100/100)};
+    score+=Math.min(30,skillHits*4);
+    // 项目匹配(15分)
+    if(job.project==='Fintech')score+=15;
+    else if(job.project==='秋招')score+=8;
+    return{job,score};
+  });
   });
   return results.sort((a,b)=>b.score-a.score).slice(0,3);
 }
-function recommendAnswer(phone){
-  const top3=matchJobs(phone);if(!top3)return '你还没有绑定投递账号哦~\n\n请在“主页”绑定你的手机号，之后我就能为你智能推荐岗位啦！';
+async function aiRecommend(phone){
+  if(!phone||!RESUME_DATA[phone])return '你还没有绑定投递账号哦~\n\n请在”主页”绑定你的手机号，之后我就能为你智能推荐岗位啦！';
+  const r=RESUME_DATA[phone];const jobs=JSON.stringify(JOB_DB);
+  const prompt='你是华小招岗位推荐助手。请根据以下候选人简历，从岗位数据库中推荐最匹配的3个岗位，按匹配度从高到低排序。为每个推荐给出匹配理由（一句话）。\n\n【候选人简历】\n'+r.education.map((e,i)=>`学历${i+1}：${e.school} ${e.major} ${e.degree} ${e.time} GPA ${e.gpa}`).join('\n')+'\n技能：'+r.skills+'\n实习经历：'+r.internships.map(x=>x.company+' '+x.role+' ('+x.time+'): '+x.desc).join('\n')+'\n\n【岗位数据库】\n'+jobs+'\n\n请按以下格式回复（不要markdown标记）：\n⭐ 第1名：岗位名称 | 匹配度：X分\n项目 | 城市 | 学历\n推荐理由：xxx\n\n🌟 第2名：...\n📌 第3名：...\n\n👉 投递请登录 job.htsc.com.cn';
+  try{const resp=await fetch('https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt})});
+    if(resp.ok){const d=await resp.json();if(d.reply)return d.reply;}}
+  catch(e){}
+  // 降级到JS匹配
+  const top3=matchJobs(phone);
   const e=['⭐','🌟','📌'];let a='📋 手机号 '+phone.slice(0,3)+'****'+phone.slice(-4)+'，以下是为你智能匹配的岗位推荐：\n\n';
   top3.forEach((r,i)=>{const j=r.job;a+=`${e[i]} ${i+1}. ${j.title}\n   所属项目：${j.project==='Fintech'?'💻 Fintech金融科技专场':j.project==='秋招'?'🎓 秋季校园招聘':'🌏 GTP跨境管培'}\n   学历要求：${j.degree}\n   工作城市：${j.city}\n   匹配度：${r.score}分\n   ${j.desc}\n\n`});
   a+='👉 投递岗位请登录 job.htsc.com.cn，祝你求职顺利~';return a;
@@ -475,7 +482,7 @@ async function sendMsg(text){
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
 
   // 导航栏快捷问题：固定答案（投递状态动态查询 / 岗位推荐）
-  if(/推荐.*岗位|适合.*岗位|岗位.*推荐|岗位.*匹配|帮我.*推荐|能投.*什么|推荐.*职位/.test(t)){streamText(aiDiv,recommendAnswer(localStorage.getItem('bindPhone')||''),()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
+  if(/推荐.*岗位|适合.*岗位|岗位.*推荐|岗位.*匹配|帮我.*推荐|能投.*什么|推荐.*职位/.test(t)){streaming=false;const rec=await aiRecommend(localStorage.getItem('bindPhone')||'');streamText(aiDiv,rec,()=>{document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   if(t==='我的投递到哪一步了？'||/我的.*(投递|进度|状态|应聘|到哪)/.test(t)){streamText(aiDiv,statusAnswer(),()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   if(FIXED_ANSWERS[t]){streamText(aiDiv,FIXED_ANSWERS[t],()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
