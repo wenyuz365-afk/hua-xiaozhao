@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=14')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=15')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -255,13 +255,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 <script>
 // ============ DATA ============
 const projects=[
-  {id:'campus',name:'秋季校园招聘',icon:'🎓',tagline:'面向2027届应届毕业生',targetAudience:'大陆院校2026年1月-7月毕业；港澳台及海外院校2026年7月-2026年6月毕业',location:'北京、上海、深圳、南京、香港、新加坡及全国各分公司',tags:['专业不限','实习考察'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'实习考察：12月-次年1月，录用：次年2月',applyUrl:'https://job.htsc.com.cn'},
-  {id:'fintech',name:'Fintech金融科技专场',icon:'💻',tagline:'信息技术/理工类优先，免实习直通Offer',targetAudience:'2027届毕业生，信息技术类、理工类专业优先',location:'北京、上海、深圳、南京',tags:['免实习考察','录用提前','IT/理工优先'],process:['网申','在线测评','专业面试','录用通知'],processTime:'免实习考察，录用时间早于秋招',applyUrl:'https://job.htsc.com.cn'},
-  {id:'gtp',name:'国际业务人才项目',icon:'🌏',tagline:'培养国际业务专项人才，跨境轮岗',targetAudience:'大陆院校2027届毕业；港澳台及海外院校2026年7月-2027年6月毕业',location:'香港、新加坡',tags:['跨境轮岗','精英培养'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'与秋招流程一致',applyUrl:'https://job.htsc.com.cn'}
+  {id:'campus',name:'秋季校园招聘',icon:'🎓',tagline:'专业不限，全业务链岗位覆盖',targetAudience:'大陆院校2027年1月-7月；港澳台及海外2026年7月-2027年6月',location:'总部（北京、上海、深圳、南京、香港、新加坡）及全国30个省市分公司',tags:['专业不限','多元复合','实习考察'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'网申截止：2026年11月9日',applyUrl:'https://job.htsc.com.cn'},
+  {id:'fintech',name:'Fintech金融科技专场',icon:'💻',tagline:'聚焦科技人才，免实习直通Offer',targetAudience:'2027届，工科/数理/经管类优先；大陆2027年1-7月；海外2026年7月-2027年6月',location:'南京、深圳、香港',tags:['免实习考察','滚动招聘','直通Offer'],process:['网申','在线测评','技术一面','技术二面','终面','录用通知'],processTime:'滚动招聘，招满即止',applyUrl:'https://job.htsc.com.cn'},
+  {id:'gtp',name:'国际业务人才项目',icon:'🌏',tagline:'培养国际业务专项人才，跨境轮岗',targetAudience:'大陆2027年1-7月；港澳台及海外2026年7月-2028年6月',location:'香港、新加坡',tags:['跨境轮岗','IBD/EST/EDD/FICC','国际化'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'与秋招流程一致',applyUrl:'https://job.htsc.com.cn'}
 ];
 const processes={
   campus:{name:'秋季校园招聘流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网 job.htsc.com.cn 投递简历。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'11月-12月',desc:'测评通过后进入面试环节。'},{title:'实习考察',time:'12月-次年1月',desc:'通过面试的同学进入实习考察阶段。'},{title:'录用通知',time:'次年2月',desc:'考察通过后发放正式录用Offer。'}]},
-  fintech:{name:'Fintech金融科技专场流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网投递。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'11月-12月',desc:'测评通过后进入专业面试。'},{title:'录用通知',time:'',desc:'面试通过后直接发放Offer，免实习考察。'}]},
+  fintech:{name:'Fintech金融科技专场流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网投递，滚动招聘。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'技术一面',time:'11月-12月',desc:'通过测评后进入专业技术面试第一轮。'},{title:'技术二面',time:'11月-12月',desc:'技术一面通过后进入第二轮面试。'},{title:'终面',time:'11月-12月',desc:'通过技术面试后进入最终面试。'},{title:'录用通知',time:'',desc:'全部面试通过后直接发放Offer，免实习考察。'}]},
   gtp:{name:'国际业务人才项目流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网投递。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'11月-12月',desc:'测评通过后进入面试环节。'},{title:'实习考察',time:'12月-次年1月',desc:'通过面试的同学进入实习考察阶段。'},{title:'录用通知',time:'次年2月',desc:'考察通过后发放正式录用Offer。'}]}
 };
 const faqs=[
