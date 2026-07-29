@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=11')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=12')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -156,7 +156,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
   <div style="display:flex;padding:6px 16px;gap:8px">
     <button class="qbtn" style="background:var(--primary);color:#fff" data-pt="campus" onclick="switchProcess('campus',this)">秋招</button>
     <button class="qbtn" data-pt="fintech" onclick="switchProcess('fintech',this)">Fintech</button>
-    <button class="qbtn" data-pt="gtp" onclick="switchProcess('gtp',this)">GTP管培</button>
+    <button class="qbtn" data-pt="gtp" onclick="switchProcess('gtp',this)">国际业务人才项目</button>
   </div>
   <div style="padding:4px 16px;font-size:13px;color:var(--text2)" id="process-name"></div>
   <div class="tl" id="timeline"></div>
@@ -255,24 +255,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 <script>
 // ============ DATA ============
 const projects=[
-  {id:'campus',name:'秋季校园招聘',icon:'🎓',tagline:'面向2026届应届毕业生',targetAudience:'大陆院校2026年1月-7月毕业；港澳台及海外院校2025年7月-2026年6月毕业',location:'北京、上海、深圳、南京、香港、新加坡及全国各分公司',tags:['专业不限','实习考察'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'实习考察：12月-次年1月，录用：次年2月',applyUrl:'https://job.htsc.com.cn'},
-  {id:'fintech',name:'Fintech金融科技专场',icon:'💻',tagline:'信息技术/理工类优先，免实习直通Offer',targetAudience:'2026届及2027届毕业生，信息技术类、理工类专业优先',location:'北京、上海、深圳、南京',tags:['免实习考察','录用提前','IT/理工优先'],process:['网申','在线测评','专业面试','录用通知'],processTime:'免实习考察，录用时间早于秋招',applyUrl:'https://job.htsc.com.cn'},
-  {id:'gtp',name:'GTP跨境管培',icon:'🌏',tagline:'跨境轮岗，培养国际化金融人才',targetAudience:'大陆院校2027届毕业；港澳台及海外院校2025年7月-2027年6月毕业',location:'香港为主，跨境轮岗',tags:['跨境轮岗','精英培养'],process:['网申','在线测评','专业面试','实习考察','录用通知'],processTime:'与秋招流程一致',applyUrl:'https://job.htsc.com.cn'}
+  {id:'campus',name:'秋季校园招聘',icon:'🎓',tagline:'面向2027届应届毕业生',targetAudience:'大陆院校2026年1月-7月毕业；港澳台及海外院校2026年7月-2026年6月毕业',location:'北京、上海、深圳、南京、香港、新加坡及全国各分公司',tags:['专业不限','实习考察'],process:['网申','在线测评','技术一面→技术二面→终面','实习考察','录用通知'],processTime:'实习考察：12月-次年1月，录用：次年2月',applyUrl:'https://job.htsc.com.cn'},
+  {id:'fintech',name:'Fintech金融科技专场',icon:'💻',tagline:'信息技术/理工类优先，免实习直通Offer',targetAudience:'2027届及2027届毕业生，信息技术类、理工类专业优先',location:'北京、上海、深圳、南京',tags:['免实习考察','录用提前','IT/理工优先'],process:['网申','在线测评','技术一面→技术二面→终面','录用通知'],processTime:'免实习考察，录用时间早于秋招',applyUrl:'https://job.htsc.com.cn'},
+  {id:'gtp',name:'国际业务人才项目',icon:'🌏',tagline:'培养国际业务专项人才，跨境轮岗',targetAudience:'大陆院校2027届毕业；港澳台及海外院校2026年7月-2027年6月毕业',location:'香港、新加坡',tags:['跨境轮岗','精英培养'],process:['网申','在线测评','技术一面→技术二面→终面','实习考察','录用通知'],processTime:'与秋招流程一致',applyUrl:'https://job.htsc.com.cn'}
 ];
 const processes={
-  campus:{name:'秋季校园招聘流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网 job.htsc.com.cn 投递简历。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'11月-12月',desc:'测评通过后进入面试环节。'},{title:'实习考察',time:'12月-次年1月',desc:'通过面试的同学进入实习考察阶段。'},{title:'录用通知',time:'次年2月',desc:'考察通过后发放正式录用Offer。'}]},
-  fintech:{name:'Fintech金融科技专场流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网投递。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'11月-12月',desc:'测评通过后进入专业面试。'},{title:'录用通知',time:'',desc:'面试通过后直接发放Offer，免实习考察。'}]},
-  gtp:{name:'GTP跨境管培流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网投递。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'专业面试',time:'11月-12月',desc:'测评通过后进入面试环节。'},{title:'实习考察',time:'12月-次年1月',desc:'通过面试的同学进入实习考察阶段。'},{title:'录用通知',time:'次年2月',desc:'考察通过后发放正式录用Offer。'}]}
+  campus:{name:'秋季校园招聘流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网 job.htsc.com.cn 投递简历。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'技术一面→技术二面→终面',time:'11月-12月',desc:'测评通过后进入面试环节。'},{title:'实习考察',time:'12月-次年1月',desc:'通过面试的同学进入实习考察阶段。'},{title:'录用通知',time:'次年2月',desc:'考察通过后发放正式录用Offer。'}]},
+  fintech:{name:'Fintech金融科技专场流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网投递。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'技术一面→技术二面→终面',time:'11月-12月',desc:'测评通过后进入技术一面→技术二面→终面。'},{title:'录用通知',time:'',desc:'面试通过后直接发放Offer，免实习考察。'}]},
+  gtp:{name:'国际业务人才项目流程',steps:[{title:'网申',time:'9月-10月',desc:'登录华泰证券招聘官网投递。'},{title:'在线测评',time:'10月-11月',desc:'通过简历筛选的同学将收到在线测评邀请。'},{title:'技术一面→技术二面→终面',time:'11月-12月',desc:'测评通过后进入面试环节。'},{title:'实习考察',time:'12月-次年1月',desc:'通过面试的同学进入实习考察阶段。'},{title:'录用通知',time:'次年2月',desc:'考察通过后发放正式录用Offer。'}]}
 };
 const faqs=[
-  {cat:'投递相关',q:'一次可以申请几个岗位？',a:'每位同学最多可以申请3个岗位，建议合理分配，选择最心仪的方向投递哦~'},
+  {cat:'投递相关',q:'一次可以申请几个岗位？',a:'每位同学最多可以申请2个岗位，建议合理分配，选择最心仪的方向投递哦~'},
   {cat:'投递相关',q:'如何查询面试进度？',a:'登录华泰证券招聘官网 job.htsc.com.cn，进入"个人中心"即可实时查看申请进度和各环节状态。'},
   {cat:'项目区别',q:'Fintech专场和秋招有什么区别？',a:'Fintech是金融科技人才专场，面向信息技术和理工类同学，最大的亮点是免实习考察，笔面试通过后直通Offer！秋招则面向所有专业，流程中包含实习考察环节。'},
-  {cat:'项目区别',q:'GTP管培面向哪一届？',a:'GTP跨境管培面向大陆院校2027届毕业生，以及港澳台及海外院校2025年7月至2027年6月期间毕业的同学。'},
-  {cat:'资格要求',q:'专业不对口可以投吗？',a:'当然可以！除Fintech专场建议信息技术/理工类优先外，秋招和GTP管培均为专业不限，我们更看重你的综合能力和发展潜力。'},
+  {cat:'项目区别',q:'国际业务人才项目面向哪一届？',a:'国际业务人才项目面向大陆院校2027届毕业生，以及港澳台及海外院校2026年7月至2027年6月期间毕业的同学。'},
+  {cat:'资格要求',q:'专业不对口可以投吗？',a:'当然可以！除Fintech专场建议信息技术/理工类优先外，秋招和国际业务人才项目均为专业不限，我们更看重你的综合能力和发展潜力。'},
   {cat:'工作地点',q:'工作地点有哪些？',a:'总部位于北京、上海、深圳、南京、香港、新加坡等核心城市，分公司及营业部覆盖全国主要城市，总有一个适合你的地方~'}
 ];
-const demoApps=[{jobTitle:'投资银行部分析师',project:'秋季校园招聘',applyTime:'2025-10-15',status:'专业面试中',statusDetail:'已完成两轮专业面试，等待终面通知',nextStep:'请留意邮件通知终面安排'}];
+const demoApps=[{jobTitle:'投资银行部分析师',project:'秋季校园招聘',applyTime:'2025-10-15',status:'技术一面→技术二面→终面中',statusDetail:'已完成两轮技术一面→技术二面→终面，等待终面通知',nextStep:'请留意邮件通知终面安排'}];
 const DEMO_PHONE='18856493686';
 // 模拟简历数据
 const RESUME_DATA={
@@ -303,27 +303,27 @@ const JOB_DB=[
 ];
 const quickQs=['招聘项目有哪些？','一次可以申请几个岗位？','Fintech专场有什么特点？','秋招的应聘流程是怎样的？','工作地点有哪些城市？','我的投递到哪一步了？'];
 const FIXED_ANSWERS={
-'招聘项目有哪些？':'华泰证券2026校园招聘共开放三大项目：\n\n🎓 秋季校园招聘 — 面向2026届毕业生，专业不限，全国覆盖，含实习考察\n\n💻 Fintech金融科技专场 — 面向2026-2027届，IT/理工优先，免实习直通Offer\n\n🌏 GTP跨境管培 — 面向2027届，香港工作，跨境轮岗\n\n三个项目可同时投递，总计最多申请3个岗位。官网：job.htsc.com.cn',
-'一次可以申请几个岗位？':'每位同学最多可以申请 3个 岗位。秋招、Fintech、GTP三个项目可以同时投递，互不影响，但总岗位数不超过3个。建议合理分配，选择最心仪的方向~',
-'Fintech专场有什么特点？':'Fintech金融科技专场的核心特点：\n\n🔥 免实习考察 — 面试通过直发Offer，录用时间早于秋招\n💻 IT/理工优先 — 面向2026届及2027届\n📍 核心城市 — 北京、上海、深圳、南京\n🔄 滚动招聘 — 招满即止，建议尽早投递',
-'秋招的应聘流程是怎样的？':'秋季校园招聘流程：\n\n网申（9-10月）→ 在线测评（10-11月）→ 专业面试（11-12月）→ 实习考察（12月-次年1月）→ 录用通知（次年2月）\n\n面向2026届毕业生，专业不限，覆盖全国及海外多个城市。',
+'招聘项目有哪些？':'华泰证券2027校园招聘共开放三大项目：\n\n🎓 秋季校园招聘 — 面向2027届毕业生，专业不限，全国覆盖，含实习考察\n\n💻 Fintech金融科技专场 — 面向2027届，IT/理工优先，免实习直通Offer\n\n🌏 国际业务人才项目 — 面向2027届，香港、新加坡\n\n三个项目可同时投递，总计最多申请2个岗位。官网：job.htsc.com.cn',
+'一次可以申请几个岗位？':'每位同学最多可以申请 3个 岗位。秋招、Fintech、GTP三个项目可以同时投递，互不影响，但总岗位数每个项目不超过2个。建议合理分配，选择最心仪的方向~',
+'Fintech专场有什么特点？':'Fintech金融科技专场的核心特点：\n\n🔥 免实习考察 — 面试通过直发Offer，录用时间早于秋招\n💻 IT/理工优先 — 面向2027届及2027届\n📍 核心城市 — 北京、上海、深圳、南京\n🔄 滚动招聘 — 招满即止，建议尽早投递',
+'秋招的应聘流程是怎样的？':'秋季校园招聘流程：\n\n网申（9-10月）→ 在线测评（10-11月）→ 技术一面→技术二面→终面（11-12月）→ 实习考察（12月-次年1月）→ 录用通知（次年2月）\n\n面向2027届毕业生，专业不限，覆盖全国及海外多个城市。',
 '工作地点有哪些城市？':'华泰证券工作地点覆盖：\n\n🏢 总部及核心城市：北京、上海、深圳、南京、香港、新加坡\n🏢 分公司：覆盖全国主要城市\n\n具体岗位的工作地点请查看官网 job.htsc.com.cn 的岗位详情。'
 };
 
 // ============ AI KNOWLEDGE ============
 const kb=[
-  {kw:['公司','华泰','华泰证券','介绍','概况'],ans:'华泰证券是一家领先的科技驱动型综合证券集团，1991年成立，在上海、香港、伦敦三地上市。\n\n业务覆盖财富管理、机构服务、投资管理和国际业务四大板块。\n\n2025年确立"ALL IN AI"战略，推出AI原生交易终端"AI涨乐"，打造AI平台"泰为"。',pri:5},
-  {kw:['招聘项目','有哪些项目','项目介绍'],ans:'华泰证券2026校园招聘共开放三大项目：\n\n🎓 秋季校园招聘\n面向2026届毕业生，专业不限，覆盖全国多个城市，含实习考察环节\n\n💻 Fintech金融科技专场\n面向2026-2027届，信息技术/理工类优先，免实习考察，直通Offer\n\n🌏 GTP跨境管培\n面向2027届（大陆），香港工作，跨境轮岗\n\n三个项目可以同时投递，总共最多申请3个岗位。',pri:10},
-  {kw:['秋招','秋季校园招聘','校招'],ans:'秋季校园招聘\n\n📌 面向人群：大陆院校2026年1月-7月毕业；港澳台及海外院校2025年7月-2026年6月毕业\n\n📍 工作地点：北京、上海、深圳、南京、香港、新加坡及全国各分公司\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\n💡 特点：专业不限，全国覆盖',pri:9},
-  {kw:['fintech','金融科技','专场','fintech专场'],ans:'Fintech金融科技专场是面向金融科技人才的特招通道！\n\n📌 面向人群：2026届及2027届毕业生，信息技术类、理工类专业优先\n\n📍 工作地点：北京、上海、深圳、南京\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 录用通知（免实习考察，录用时间提前）\n\n🔥 核心特点：免实习，录用早，滚动招聘，先到先得，直通Offer！',pri:9},
-  {kw:['gtp','跨境','管培','管培生'],ans:'GTP跨境管培生项目\n\n📌 面向人群：\n• 大陆院校2027届毕业生\n• 港澳台及海外院校2025年7月-2027年6月期间毕业\n\n📍 工作地点：香港为主，跨境轮岗\n\n📋 招聘流程：网申 → 在线测评 → 专业面试 → 实习考察 → 录用通知（与秋招流程一致）',pri:9},
-  {kw:['投递','申请','几个','最多','怎么申请','如何投递'],ans:'关于投递规则：\n\n📌 申请数量：每位同学最多可以申请3个岗位\n\n📌 投递方式：登录华泰证券招聘官网 job.htsc.com.cn，选择心仪岗位在线投递\n\n📌 三个项目的关系：秋招、Fintech、GTP可以同时投递，互不影响，但总岗位数不超过3个。',pri:10},
-  {kw:['流程','应聘流程','招聘流程','步骤','面试流程'],ans:'华泰证券校招流程因项目不同而有差异：\n\n秋季校园招聘：\n网申(9-10月) → 在线测评(10-11月) → 专业面试(11-12月) → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\nFintech金融科技专场：\n网申 → 在线测评 → 专业面试 → 录用通知（免实习考察，录用时间提前）\n\nGTP跨境管培：\n网申 → 在线测评 → 专业面试 → 实习考察 → 录用通知（与秋招流程一致）',pri:8},
+  {kw:['公司','华泰','华泰证券','介绍','概况'],ans:'华泰证券是一家领先的科技驱动型综合证券集团，1991年成立，在上海、香港、伦敦三地上市。\n\n业务覆盖财富管理、机构服务、投资管理和国际业务四大板块。\n\n2026年确立"ALL IN AI"战略，推出AI原生交易终端"AI涨乐"，打造AI平台"泰为"。',pri:5},
+  {kw:['招聘项目','有哪些项目','项目介绍'],ans:'华泰证券2027校园招聘共开放三大项目：\n\n🎓 秋季校园招聘\n面向2027届毕业生，专业不限，覆盖全国多个城市，含实习考察环节\n\n💻 Fintech金融科技专场\n面向2027届，信息技术/理工类优先，免实习考察，直通Offer\n\n🌏 国际业务人才项目\n面向2027届（大陆），香港、新加坡\n\n三个项目可以同时投递，总共最多申请2个岗位。',pri:10},
+  {kw:['秋招','秋季校园招聘','校招'],ans:'秋季校园招聘\n\n📌 面向人群：大陆院校2026年1月-7月毕业；港澳台及海外院校2026年7月-2026年6月毕业\n\n📍 工作地点：北京、上海、深圳、南京、香港、新加坡及全国各分公司\n\n📋 招聘流程：网申 → 在线测评 → 技术一面→技术二面→终面 → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\n💡 特点：专业不限，全国覆盖',pri:9},
+  {kw:['fintech','金融科技','专场','fintech专场'],ans:'Fintech金融科技专场是面向金融科技人才的特招通道！\n\n📌 面向人群：2027届及2027届毕业生，信息技术类、理工类专业优先\n\n📍 工作地点：北京、上海、深圳、南京\n\n📋 招聘流程：网申 → 在线测评 → 技术一面→技术二面→终面 → 录用通知（免实习考察，录用时间提前）\n\n🔥 核心特点：免实习，录用早，滚动招聘，先到先得，直通Offer！',pri:9},
+  {kw:['gtp','跨境','管培','国际业务人才'],ans:'国际业务人才项目生项目\n\n📌 面向人群：\n• 大陆院校2027届毕业生\n• 港澳台及海外院校2026年7月-2027年6月期间毕业\n\n📍 工作地点：香港、新加坡\n\n📋 招聘流程：网申 → 在线测评 → 技术一面→技术二面→终面 → 实习考察 → 录用通知（与秋招流程一致）',pri:9},
+  {kw:['投递','申请','几个','最多','怎么申请','如何投递'],ans:'关于投递规则：\n\n📌 申请数量：每位同学最多可以申请2个岗位\n\n📌 投递方式：登录华泰证券招聘官网 job.htsc.com.cn，选择心仪岗位在线投递\n\n📌 三个项目的关系：秋招、Fintech、GTP可以同时投递，互不影响，但总岗位数每个项目不超过2个。',pri:10},
+  {kw:['流程','应聘流程','招聘流程','步骤','面试流程'],ans:'华泰证券校招流程因项目不同而有差异：\n\n秋季校园招聘：\n网申(9-10月) → 在线测评(10-11月) → 技术一面→技术二面→终面(11-12月) → 实习考察(12月-次年1月) → 录用通知(次年2月)\n\nFintech金融科技专场：\n网申 → 在线测评 → 技术一面→技术二面→终面 → 录用通知（免实习考察，录用时间提前）\n\n国际业务人才项目：\n网申 → 在线测评 → 技术一面→技术二面→终面 → 实习考察 → 录用通知（与秋招流程一致）',pri:8},
   {kw:['面试','进度','查询','进展','状态'],ans:'查询面试进度的方法：\n\n登录华泰证券招聘官网 job.htsc.com.cn，进入"个人中心"即可实时查看申请进度和各环节状态。',pri:8},
-  {kw:['毕业时间','毕业','应届','届','哪一届'],ans:'各项目的毕业时间要求如下：\n\n🎓 秋季校园招聘：大陆2026.1-2026.7毕业；港澳台及海外2025.7-2026.6毕业\n\n💻 Fintech专场：2026届及2027届均可\n\n🌏 GTP管培：大陆2027届；港澳台及海外2025.7-2027.6毕业\n\n⚠️ 港澳台及海外院校以学位证颁发时间为准。',pri:9},
+  {kw:['毕业时间','毕业','应届','届','哪一届'],ans:'各项目的毕业时间要求如下：\n\n🎓 秋季校园招聘：大陆2027.1-2027.7毕业；港澳台及海外2026.7-2027.6毕业\n\n💻 Fintech专场：2027届及2027届均可\n\n🌏 国际业务人才项目：大陆2027届；港澳台及海外2026.7-2028.6毕业\n\n⚠️ 港澳台及海外院校以学位证颁发时间为准。',pri:9},
   {kw:['工作地点','地点','城市','在哪','哪里'],ans:'工作地点：\n\n🏢 总部：北京、上海、深圳、南京、香港、新加坡\n\n🏢 分公司：覆盖全国主要城市',pri:8},
-  {kw:['专业','专业不对口','对口','专业要求'],ans:'可以，专业不限。除Fintech专场建议信息技术/理工类专业优先外，秋招和GTP管培项目均为专业不限。',pri:8},
-  {kw:['实习','考察','实习考察'],ans:'关于实习考察：\n\n📌 秋招项目：实习考察是必经环节（12月至次年1月）\n\n📌 Fintech专场：免实习考察，面试通过直发Offer\n\n📌 GTP管培：无实习考察环节',pri:8},
+  {kw:['专业','专业不对口','对口','专业要求'],ans:'可以，专业不限。除Fintech专场建议信息技术/理工类专业优先外，秋招和国际业务人才项目项目均为专业不限。',pri:8},
+  {kw:['实习','考察','实习考察'],ans:'关于实习考察：\n\n📌 秋招项目：实习考察是必经环节（12月至次年1月）\n\n📌 Fintech专场：免实习考察，面试通过直发Offer\n\n📌 国际业务人才项目：无实习考察环节',pri:8},
   {kw:['联系','邮箱','官网','网址'],ans:'联系方式：\n\n🌐 招聘官网：job.htsc.com.cn\n📧 招聘邮箱：zhaopin.ht@htsc.com',pri:7},
   {kw:['我的','投递','到哪'],ans:'__STATUS__',pri:12}
 ];
@@ -376,20 +376,20 @@ function matchJobs(phone){
 async function aiRecommend(phone){
   if(!phone||!RESUME_DATA[phone])return '你还没有绑定投递账号哦~\n\n请在”主页”绑定你的手机号，之后我就能为你智能推荐岗位啦！';
   const r=RESUME_DATA[phone];const jobs=JSON.stringify(JOB_DB);
-  const prompt='你是华小招岗位推荐助手。请根据以下候选人简历，从岗位数据库中推荐最匹配的3个岗位，按匹配度从高到低排序。为每个推荐给出匹配理由（一句话）。\n\n【候选人简历】\n'+r.education.map((e,i)=>`学历${i+1}：${e.school} ${e.major} ${e.degree} ${e.time} GPA ${e.gpa}`).join('\n')+'\n技能：'+r.skills+'\n实习经历：'+r.internships.map(x=>x.company+' '+x.role+' ('+x.time+'): '+x.desc).join('\n')+'\n\n【岗位数据库】\n'+jobs+'\n\n请按以下格式回复（不要markdown标记）：\n⭐ 第1名：岗位名称 | 匹配度：X分\n项目 | 城市 | 学历\n推荐理由：xxx\n\n🌟 第2名：...\n📌 第3名：...\n\n👉 投递请登录 job.htsc.com.cn';
+  const prompt='你是华小招岗位推荐助手。请根据以下候选人简历，从岗位数据库中推荐最匹配的2个岗位，按匹配度从高到低排序。为每个推荐给出匹配理由（一句话）。\n\n【候选人简历】\n'+r.education.map((e,i)=>`学历${i+1}：${e.school} ${e.major} ${e.degree} ${e.time} GPA ${e.gpa}`).join('\n')+'\n技能：'+r.skills+'\n实习经历：'+r.internships.map(x=>x.company+' '+x.role+' ('+x.time+'): '+x.desc).join('\n')+'\n\n【岗位数据库】\n'+jobs+'\n\n请按以下格式回复（不要markdown标记）：\n⭐ 第1名：岗位名称 | 匹配度：X分\n项目 | 城市 | 学历\n推荐理由：xxx\n\n🌟 第2名：...\n📌 第3名：...\n\n👉 投递请登录 job.htsc.com.cn';
   try{const resp=await fetch('https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt})});
     if(resp.ok){const d=await resp.json();if(d.reply)return d.reply;}}
   catch(e){}
   // 降级到JS匹配
   const top3=matchJobs(phone);
   const e=['⭐','🌟','📌'];let a='📋 手机号 '+phone.slice(0,3)+'****'+phone.slice(-4)+'，以下是为你智能匹配的岗位推荐：\n\n';
-  top3.forEach((r,i)=>{const j=r.job;a+=`${e[i]} ${i+1}. ${j.title}\n   所属项目：${j.project==='Fintech'?'💻 Fintech金融科技专场':j.project==='秋招'?'🎓 秋季校园招聘':'🌏 GTP跨境管培'}\n   学历要求：${j.degree}\n   工作城市：${j.city}\n   匹配度：${r.score}分\n   ${j.desc}\n\n`});
+  top3.forEach((r,i)=>{const j=r.job;a+=`${e[i]} ${i+1}. ${j.title}\n   所属项目：${j.project==='Fintech'?'💻 Fintech金融科技专场':j.project==='秋招'?'🎓 秋季校园招聘':'🌏 国际业务人才项目'}\n   学历要求：${j.degree}\n   工作城市：${j.city}\n   匹配度：${r.score}分\n   ${j.desc}\n\n`});
   a+='👉 投递岗位请登录 job.htsc.com.cn，祝你求职顺利~';return a;
 }
 function renderRecommendCards(phone){
   const top3=matchJobs(phone);if(!top3)return'';
   const c=['#FF6B6B','#FFA726','#FFD54F'];let h='<div class="sec-title"><span class="st-icon">🧠</span>智能岗位推荐</div>';
-  top3.forEach((r,i)=>{const j=r.job;h+=`<div class="card" style="border-left:4px solid ${c[i]};margin-bottom:8px"><div style="font-weight:700;font-size:15px;margin-bottom:4px">${i+1}. ${j.title}</div><div class="sp">${j.project==='Fintech'?'Fintech金融科技专场':j.project==='秋招'?'秋季校园招聘':'GTP跨境管培'} · ${j.city} · ${j.degree}</div><div style="font-size:13px;color:var(--text2);margin-top:4px;line-height:1.6">${j.desc}</div><div style="margin-top:6px"><span style="display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;background:${c[i]}20;color:${c[i]};font-weight:600">匹配度 ${r.score}分</span></div></div>`});
+  top3.forEach((r,i)=>{const j=r.job;h+=`<div class="card" style="border-left:4px solid ${c[i]};margin-bottom:8px"><div style="font-weight:700;font-size:15px;margin-bottom:4px">${i+1}. ${j.title}</div><div class="sp">${j.project==='Fintech'?'Fintech金融科技专场':j.project==='秋招'?'秋季校园招聘':'国际业务人才项目'} · ${j.city} · ${j.degree}</div><div style="font-size:13px;color:var(--text2);margin-top:4px;line-height:1.6">${j.desc}</div><div style="margin-top:6px"><span style="display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;background:${c[i]}20;color:${c[i]};font-weight:600">匹配度 ${r.score}分</span></div></div>`});
   return h;
 }
 function renderResumeCard(phone){
