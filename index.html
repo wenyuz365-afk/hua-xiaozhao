@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=28')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=20')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -441,17 +441,35 @@ function doBind(){
 function doUnbind(){if(!confirm('确定要解绑投递账号吗？'))return;localStorage.removeItem('bindPhone');localStorage.removeItem('bindTime');renderMePage();showToast('已解绑')}
 
 
-function getUserContext(){
-  var ph=localStorage.getItem("bindPhone");if(!ph)return"";
-  var ctx="\n\n【当前用户上下文】手机号："+ph;
-  var r=RESUME_DATA[ph];if(r){
-    ctx+="\n姓名："+r.name;
-    for(var i=0;i<r.education.length;i++){var e=r.education[i];ctx+="\n"+e.degree+"："+e.school+" "+e.major+" "+e.time;}
-    ctx+="\n技能："+r.skills;
-    for(var j=0;j<r.internships.length;j++){var x=r.internships[j];ctx+="\n实习："+x.company+" "+x.role+" ("+x.time+")";}
-  }
-  if(demoApps&&demoApps.length){ctx+="\n投递记录：";for(var k=0;k<demoApps.length;k++){var a=demoApps[k];ctx+="\n- "+a.jobTitle+"（"+a.project+"）投递时间"+a.applyTime+" 状态："+a.status+" "+a.statusDetail;}}
-  return ctx;
+function buildResumePrompt(){
+  var ph=localStorage.getItem("bindPhone");if(!ph)return"推荐适合我的岗位";
+  var r=RESUME_DATA[ph];if(!r)return"推荐适合我的岗位";
+  var p="请根据以下候选人简历，从华泰证券校招岗位中推荐最匹配的3个岗位，给出匹配度评分和推荐理由。
+";
+  r.education.forEach(function(e){p+="
+"+e.degree+"："+e.school+" "+e.major+" "+e.time+" GPA"+e.gpa;});
+  p+="
+技能："+r.skills;
+  r.internships.forEach(function(x){p+="
+实习："+x.company+" "+x.role+" ("+x.time+") "+x.desc;});
+  p+="
+
+请按此格式回复：
+⭐ 第1名：岗位名称 | 匹配度：X分 | 推荐理由：xxx
+🌟 第2名：...
+📌 第3名：...";
+  return p;
+}
+
+function buildStatusPrompt(){
+  var ph=localStorage.getItem("bindPhone");if(!ph)return"查询投递进度";
+  var p="请根据以下用户的投递数据回答投递进度问题。
+手机号："+ph;
+  if(demoApps&&demoApps.length){demoApps.forEach(function(a){p+="
+- "+a.jobTitle+"（"+a.project+"）投递时间"+a.applyTime+" 状态："+a.status+" "+a.statusDetail;});}
+  p+="
+请用自然语言告知用户当前的投递状态和下一步建议。";
+  return p;
 }
 // ============ CHAT ============
 let streaming=false;
@@ -468,7 +486,7 @@ async function sendMsg(text){
   // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
   var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
   try{
-    const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t+getUserContext()})});
+    const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})});
     if(resp.ok){
       const data=await resp.json();
       const reply=data.reply||(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
