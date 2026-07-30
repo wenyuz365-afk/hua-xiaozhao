@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=33')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=34')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -503,7 +503,8 @@ async function sendMsg(text){
   const now=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
 
-  // 导航栏快捷问题：5个固定答案，其余走DeepSeek
+  // 导航栏快捷问题：固定答案（投递状态动态查询）
+  if(/我的.*(投递|进度|状态|应聘|到哪)|查.*(投递|进度|状态)|投递.*(进度|状态|到哪)/.test(t)){streamText(aiDiv,statusAnswer(),()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   if(FIXED_ANSWERS[t]){streamText(aiDiv,FIXED_ANSWERS[t],()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
   var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
