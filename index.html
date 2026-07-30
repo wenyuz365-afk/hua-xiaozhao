@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=25')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=26')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -452,11 +452,19 @@ async function sendMsg(text){
 
   // 导航栏快捷问题：5个固定答案，其余走DeepSeek
   if(FIXED_ANSWERS[t]){streamText(aiDiv,FIXED_ANSWERS[t],()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
-  // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
-  var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
   // 拼接用户上下文信息（绑定状态+投递数据+简历）
   var ctx='';const ph=localStorage.getItem('bindPhone');
-  if(ph){ctx='\n\n【当前用户上下文】手机号：'+ph;const r=RESUME_DATA[ph];if(r){ctx+='\n姓名：'+r.name;r.education.forEach(e=>ctx+='\n'+e.degree+'：'+e.school+' '+e.major+' '+e.time);ctx+='\n技能：'+r.skills;r.internships.forEach(x=>ctx+='\n实习：'+x.company+' '+x.role+' ('+x.time+')');}if(demoApps&&demoApps.length){ctx+='\n投递记录：';demoApps.forEach(a=>ctx+='\n- '+a.jobTitle+'（'+a.project+'）投递时间'+a.applyTime+' 状态：'+a.status+' '+a.statusDetail);}}}
+  if(ph){ctx='
+
+【当前用户上下文】手机号：'+ph;const r=RESUME_DATA[ph];if(r){ctx+='
+姓名：'+r.name;r.education.forEach(function(e){ctx+='
+'+e.degree+'：'+e.school+' '+e.major+' '+e.time});ctx+='
+技能：'+r.skills;r.internships.forEach(function(x){ctx+='
+实习：'+x.company+' '+x.role+' ('+x.time+')'});}if(demoApps&&demoApps.length){ctx+='
+投递记录：';demoApps.forEach(function(a){ctx+='
+- '+a.jobTitle+'（'+a.project+'）投递时间'+a.applyTime+' 状态：'+a.status+' '+a.statusDetail})}}
+  // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
+  var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
   try{
     const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t+ctx})});
     if(resp.ok){
@@ -466,7 +474,8 @@ async function sendMsg(text){
     }
   }catch(e){}
   // API失败降级到本地关键词匹配
-  setTimeout(()=>{const ans=aiReply(t);streamText(aiDiv,ans,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()})},300);}
+  setTimeout(()=>{const ans=aiReply(t);streamText(aiDiv,ans,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()})},300);
+}
 function addMsg(role,content,time,streaming){
   const msgs=document.getElementById('chat-msgs');const row=document.createElement('div');row.className='msg-row '+role;
   const av=document.createElement('div');av.className='av';av.textContent=role==='ai'?'🤖':'👤';
