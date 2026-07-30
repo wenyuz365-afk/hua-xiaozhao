@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=35')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=36')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -492,7 +492,7 @@ function doBind(){
   closeBindModal();renderMePage();showToast('绑定成功');
 }
 function doUnbind(){if(!confirm('确定要解绑投递账号吗？'))return;localStorage.removeItem('bindPhone');localStorage.removeItem('bindTime');renderMePage();showToast('已解绑')}
-function getResumeCtx(){var ph=localStorage.getItem('bindPhone');if(!ph)return'';var r=RESUME_DATA[ph];if(!r)return'';var s='\n\n【简历信息】';for(var i=0;i<r.education.length;i++){var e=r.education[i];s+='\n'+e.degree+'：'+e.school+' '+e.major+' '+e.time+' GPA'+e.gpa;}s+='\n技能：'+r.skills;for(var j=0;j<r.internships.length;j++){var x=r.internships[j];s+='\n实习：'+x.company+' '+x.role+' ('+x.time+') '+x.desc;}return s;}
+function getResumeCtx(){var ph=localStorage.getItem('bindPhone');if(!ph)return'';var r=RESUME_DATA[ph];if(!r)return'';var s='\n\n根据以下简历，从华泰校招岗位中推荐最匹配的3个岗位，按匹配度排序，每岗给匹配度评分和推荐理由：';for(var i=0;i<r.education.length;i++){var e=r.education[i];s+='\n'+e.degree+'：'+e.school+' '+e.major+' '+e.time+' GPA'+e.gpa;}s+='\n技能：'+r.skills;for(var j=0;j<r.internships.length;j++){var x=r.internships[j];s+='\n实习：'+x.company+' '+x.role+' ('+x.time+') '+x.desc;}s+='\n\n请按此格式回复：⭐第1名：岗位名 | 匹配度：X分 | 理由：xxx\n🌟第2名：...\n📌第3名：...';return s;}
 function getStatusCtx(){var ph=localStorage.getItem('bindPhone');if(!ph)return'';var s='\n\n【投递数据】手机号：'+ph;if(demoApps&&demoApps.length){for(var i=0;i<demoApps.length;i++){var a=demoApps[i];s+='\n- '+a.jobTitle+'（'+a.project+'）投递时间'+a.applyTime+' 状态：'+a.status+' '+a.statusDetail;}}return s;}
 
 // ============ CHAT ============
