@@ -215,8 +215,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
   </div>
 
 
-  <!-- 智能岗位推荐 -->
-  <div id="job-recommendations"></div>
   <!-- 快捷入口 -->
   <div class="sec-title"><span class="st-icon">⚡</span>快捷操作</div>
   <div class="card">
@@ -301,7 +299,7 @@ const JOB_DB=[
 {id:9,title:'国际业务岗',project:'GTP',degree:'硕士及以上',majors:'专业不限',city:'香港',desc:'跨境业务拓展，参与国际项目执行'},
 {id:10,title:'机构服务岗',project:'秋招',degree:'硕士及以上',majors:'金融,经济',city:'北京,上海,深圳,南京',desc:'服务机构客户，提供综合金融解决方案'}
 ];
-const quickQs=['招聘项目有哪些？','一次可以申请几个岗位？','Fintech专场有什么特点？','秋招的应聘流程是怎样的？','工作地点有哪些城市？','我的投递到哪一步了？'];
+const quickQs=['招聘项目有哪些？','一次可以申请几个岗位？','Fintech专场有什么特点？','秋招的应聘流程是怎样的？','工作地点有哪些城市？','我适合什么岗位？','我的投递到哪一步了？'];
 const FIXED_ANSWERS={
 '招聘项目有哪些？':'华泰证券2027校园招聘共开放三大项目：\n\n🎓 秋季校园招聘 — 面向2027届毕业生，专业不限，全国覆盖，含实习考察\n\n💻 Fintech金融科技专场 — 面向2027届，IT/理工优先，免实习直通Offer\n\n🌏 跨境管培GTP项目 — 面向2027届，香港、新加坡\n\n三个项目可同时投递，总计最多申请2个岗位。官网：job.htsc.com.cn',
 '一次可以申请几个岗位？':'每位同学最多可以申请 3个 岗位。秋招、Fintech、GTP三个项目可以同时投递，互不影响，但总岗位数每个项目不超过2个。建议合理分配，选择最心仪的方向~',
@@ -386,12 +384,6 @@ async function aiRecommend(phone){
   top3.forEach((r,i)=>{const j=r.job;a+=`${e[i]} ${i+1}. ${j.title}\n   所属项目：${j.project==='Fintech'?'💻 Fintech金融科技专场':j.project==='秋招'?'🎓 秋季校园招聘':'🌏 跨境管培GTP项目'}\n   学历要求：${j.degree}\n   工作城市：${j.city}\n   匹配度：${r.score}分\n   ${j.desc}\n\n`});
   a+='👉 投递岗位请登录 job.htsc.com.cn，祝你求职顺利~';return a;
 }
-function renderRecommendCards(phone){
-  const top3=matchJobs(phone);if(!top3)return'';
-  const c=['#FF6B6B','#FFA726','#FFD54F'];let h='<div class="sec-title"><span class="st-icon">🧠</span>智能岗位推荐</div>';
-  top3.forEach((r,i)=>{const j=r.job;h+=`<div class="card" style="border-left:4px solid ${c[i]};margin-bottom:8px"><div style="font-weight:700;font-size:15px;margin-bottom:4px">${i+1}. ${j.title}</div><div class="sp">${j.project==='Fintech'?'Fintech金融科技专场':j.project==='秋招'?'秋季校园招聘':'跨境管培GTP项目'} · ${j.city} · ${j.degree}</div><div style="font-size:13px;color:var(--text2);margin-top:4px;line-height:1.6">${j.desc}</div><div style="margin-top:6px"><span style="display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;background:${c[i]}20;color:${c[i]};font-weight:600">匹配度 ${r.score}分</span></div></div>`});
-  return h;
-}
 function renderResumeCard(phone){
   const r=RESUME_DATA[phone];if(!r)return'<div class="card" style="text-align:center;color:var(--hint)">暂无简历数据，请先在官网完善简历</div>';
   const id='resume-'+Date.now();
@@ -457,13 +449,11 @@ function renderMePage(){
         <div style="font-size:12px;color:var(--hint);margin-top:4px">💡 ${app.nextStep}</div>
       </div></div>
     `).join('')+'<div style="text-align:center;padding:12px"><span style="font-size:13px;color:var(--primary);cursor:pointer" onclick="doUnbind()">解绑账号</span></div>';
-            document.getElementById('job-recommendations').innerHTML=renderRecommendCards(phone);
             document.getElementById('my-resume').innerHTML=renderResumeCard(phone);
   }else{
     document.getElementById('me-name').textContent='同学你好';
     document.getElementById('me-phone-display').textContent='未绑定投递账号';
             document.getElementById('my-resume').innerHTML='';
-            document.getElementById('job-recommendations').innerHTML='';
     document.getElementById('my-applications').innerHTML=`
       <div class="card" style="text-align:center;color:var(--hint)" id="no-bind-hint">
         <div style="font-size:40px;margin-bottom:8px">🔗</div>
@@ -513,9 +503,8 @@ async function sendMsg(text){
   const now=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
 
-  // 导航栏快捷问题：固定答案（投递状态动态查询 / 岗位推荐）
-  if(/推荐.*岗位|适合.*岗位|岗位.*推荐|岗位.*匹配|帮我.*推荐|能投.*什么|推荐.*职位/.test(t)){streaming=false;const rec=await aiRecommend(localStorage.getItem('bindPhone')||'');streamText(aiDiv,rec,()=>{document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
-  if(t==='我的投递到哪一步了？'||/我的.*(投递|进度|状态|应聘|到哪)/.test(t)){streamText(aiDiv,statusAnswer(),()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
+  // 导航栏快捷问题：固定答案（投递状态动态查询）
+  if(/我的.*(投递|进度|状态|应聘|到哪)|查.*(投递|进度|状态)|投递.*(进度|状态|到哪)/.test(t)){streamText(aiDiv,statusAnswer(),()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   if(FIXED_ANSWERS[t]){streamText(aiDiv,FIXED_ANSWERS[t],()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
   // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
   var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
