@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=32')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=33')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -286,6 +286,19 @@ internships:[
 {company:'微软亚洲研究院',role:'研究实习生',time:'2025.6 - 2025.9',desc:'参与多模态大模型项目，负责视觉-语言对齐模块的数据处理与实验；ICLR 2026 Workshop短文一篇（二作）'}
 ]
 }};
+// 岗位数据库
+const JOB_DB=[
+{id:1,title:'软件开发工程师',project:'Fintech',degree:'硕士',majors:'计算机,软件工程',city:'南京,深圳',desc:'负责金融科技平台后端开发与架构设计'},
+{id:2,title:'AI工程师',project:'Fintech',degree:'硕士及以上',majors:'人工智能,计算机,数学',city:'南京',desc:'负责AI模型研发与落地，涵盖NLP/CV/多模态方向'},
+{id:3,title:'算法工程师',project:'Fintech',degree:'硕士及以上',majors:'计算机,统计学,数学',city:'南京,深圳',desc:'负责金融场景下的算法设计与优化'},
+{id:4,title:'数据工程师',project:'Fintech',degree:'本科及以上',majors:'计算机,数据科学',city:'南京,深圳',desc:'负责大数据平台建设与数据管道开发'},
+{id:5,title:'Web前端开发工程师',project:'Fintech',degree:'本科及以上',majors:'计算机,软件工程',city:'南京',desc:'负责金融终端Web前端界面开发'},
+{id:6,title:'iOS/Android开发工程师',project:'Fintech',degree:'本科及以上',majors:'计算机,软件工程',city:'南京',desc:'负责移动端App开发与维护'},
+{id:7,title:'投资银行部分析师',project:'秋招',degree:'硕士及以上',majors:'专业不限',city:'北京,上海,深圳',desc:'参与IPO、并购等投行业务执行'},
+{id:8,title:'财富管理岗',project:'秋招',degree:'本科及以上',majors:'专业不限',city:'全国',desc:'为高净值客户提供资产配置与财富规划服务'},
+{id:9,title:'国际业务岗',project:'GTP',degree:'硕士及以上',majors:'专业不限',city:'香港',desc:'跨境业务拓展，参与国际项目执行'},
+{id:10,title:'机构服务岗',project:'秋招',degree:'硕士及以上',majors:'金融,经济',city:'北京,上海,深圳,南京',desc:'服务机构客户，提供综合金融解决方案'}
+];
 const quickQs=['招聘项目有哪些？','一次可以申请几个岗位？','Fintech专场有什么特点？','秋招的应聘流程是怎样的？','工作地点有哪些城市？','我适合什么岗位？','我的投递到哪一步了？'];
 const FIXED_ANSWERS={
 '招聘项目有哪些？':'华泰证券2027校园招聘共开放三大项目：\n\n🎓 秋季校园招聘 — 面向2027届毕业生，专业不限，全国覆盖，含实习考察\n\n💻 Fintech金融科技专场 — 面向2027届，IT/理工优先，免实习直通Offer\n\n🌏 跨境管培GTP项目 — 面向2027届，香港、新加坡\n\n三个项目可同时投递，总计最多申请2个岗位。官网：job.htsc.com.cn',
@@ -331,6 +344,46 @@ function statusAnswer(){
   a+='祝你求职顺利~';return a;
 }
 function similar(a,b){const l=a.length>b.length?a:b;const s=a.length>b.length?b:a;if(!l.length)return 1;if(l.includes(s))return.85;let c=0;const set=new Set(s.split(''));for(const ch of l)if(set.has(ch))c++;return c/l.length}
+function matchJobs(phone){
+  const resume=RESUME_DATA[phone];if(!resume)return null;
+  const edu=resume.education[0];
+  const related={'人工智能':'计算机,软件工程,数学','计算机科学与技术':'计算机,软件工程','数据科学':'计算机,统计学','软件工程':'计算机,软件工程','统计学':'数学,统计学','金融':'金融,经济','经济学':'金融,经济'};
+  const results=JOB_DB.map(job=>{
+    let score=0;
+    // 专业匹配(30分)
+    if(job.majors==='专业不限')score+=18;
+    else{const reqs=job.majors.split(',');let best=0;
+      for(const r of reqs){if(edu.major.includes(r)){best=30;break}
+        const rel=(related[edu.major]||'').split(',');if(rel.some(x=>r.includes(x)))best=Math.max(best,22);}
+      score+=best;}
+    // 学历匹配(25分)
+    if(job.degree.includes('及以上')&&edu.degree==='硕士')score+=25;
+    else if(job.degree.includes(edu.degree))score+=25;
+    else if(job.degree.includes('本科')&&edu.degree==='硕士')score+=22;
+    // 技能匹配(30分)
+    const skills=resume.skills;let skillHits=0;
+    ['Python','Java','C++','SQL','PyTorch','TensorFlow','Docker','Git','LangChain'].forEach(s=>{if(skills.includes(s))skillHits++});
+    score+=Math.min(30,skillHits*4);
+    // 项目匹配(15分)
+    if(job.project==='Fintech')score+=15;
+    else if(job.project==='秋招')score+=8;
+    return{job,score};
+  });
+  return results.sort((a,b)=>b.score-a.score).slice(0,3);
+}
+async function aiRecommend(phone){
+  if(!phone||!RESUME_DATA[phone])return '你还没有绑定投递账号哦~\n\n请在”主页”绑定你的手机号，之后我就能为你智能推荐岗位啦！';
+  const r=RESUME_DATA[phone];const jobs=JSON.stringify(JOB_DB);
+  const prompt='你是华小招岗位推荐助手。请根据以下候选人简历，从岗位数据库中推荐最匹配的2个岗位，按匹配度从高到低排序。为每个推荐给出匹配理由（一句话）。\n\n【候选人简历】\n'+r.education.map((e,i)=>`学历${i+1}：${e.school} ${e.major} ${e.degree} ${e.time} GPA ${e.gpa}`).join('\n')+'\n技能：'+r.skills+'\n实习经历：'+r.internships.map(x=>x.company+' '+x.role+' ('+x.time+'): '+x.desc).join('\n')+'\n\n【岗位数据库】\n'+jobs+'\n\n请按以下格式回复（不要markdown标记）：\n⭐ 第1名：岗位名称 | 匹配度：X分\n项目 | 城市 | 学历\n推荐理由：xxx\n\n🌟 第2名：...\n📌 第3名：...\n\n👉 投递请登录 job.htsc.com.cn';
+  try{const resp=await fetch('https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt})});
+    if(resp.ok){const d=await resp.json();if(d.reply)return d.reply;}}
+  catch(e){}
+  // 降级到JS匹配
+  const top3=matchJobs(phone);
+  const e=['⭐','🌟','📌'];let a='📋 手机号 '+phone.slice(0,3)+'****'+phone.slice(-4)+'，以下是为你智能匹配的岗位推荐：\n\n';
+  top3.forEach((r,i)=>{const j=r.job;a+=`${e[i]} ${i+1}. ${j.title}\n   所属项目：${j.project==='Fintech'?'💻 Fintech金融科技专场':j.project==='秋招'?'🎓 秋季校园招聘':'🌏 跨境管培GTP项目'}\n   学历要求：${j.degree}\n   工作城市：${j.city}\n   匹配度：${r.score}分\n   ${j.desc}\n\n`});
+  a+='👉 投递岗位请登录 job.htsc.com.cn，祝你求职顺利~';return a;
+}
 function renderResumeCard(phone){
   const r=RESUME_DATA[phone];if(!r)return'<div class="card" style="text-align:center;color:var(--hint)">暂无简历数据，请先在官网完善简历</div>';
   const id='resume-'+Date.now();
@@ -440,37 +493,6 @@ function doBind(){
 }
 function doUnbind(){if(!confirm('确定要解绑投递账号吗？'))return;localStorage.removeItem('bindPhone');localStorage.removeItem('bindTime');renderMePage();showToast('已解绑')}
 
-
-function buildResumePrompt(){
-  var ph=localStorage.getItem("bindPhone");if(!ph)return"推荐适合我的岗位";
-  var r=RESUME_DATA[ph];if(!r)return"推荐适合我的岗位";
-  var p="请根据以下候选人简历，从华泰证券校招岗位中推荐最匹配的3个岗位，给出匹配度评分和推荐理由。
-";
-  r.education.forEach(function(e){p+="
-"+e.degree+"："+e.school+" "+e.major+" "+e.time+" GPA"+e.gpa;});
-  p+="
-技能："+r.skills;
-  r.internships.forEach(function(x){p+="
-实习："+x.company+" "+x.role+" ("+x.time+") "+x.desc;});
-  p+="
-
-请按此格式回复：
-⭐ 第1名：岗位名称 | 匹配度：X分 | 推荐理由：xxx
-🌟 第2名：...
-📌 第3名：...";
-  return p;
-}
-
-function buildStatusPrompt(){
-  var ph=localStorage.getItem("bindPhone");if(!ph)return"查询投递进度";
-  var p="请根据以下用户的投递数据回答投递进度问题。
-手机号："+ph;
-  if(demoApps&&demoApps.length){demoApps.forEach(function(a){p+="
-- "+a.jobTitle+"（"+a.project+"）投递时间"+a.applyTime+" 状态："+a.status+" "+a.statusDetail;});}
-  p+="
-请用自然语言告知用户当前的投递状态和下一步建议。";
-  return p;
-}
 // ============ CHAT ============
 let streaming=false;
 function goChat(q){switchTab('chat');sendMsg(q)}
@@ -480,15 +502,11 @@ async function sendMsg(text){
   const empty=document.getElementById('chat-empty');if(empty)empty.style.display='none';
   const now=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
   addMsg('user',t,now);const aiDiv=addMsg('ai','',now,true);
-  var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
 
-  // 岗位推荐：附简历发给DeepSeek
-  if(/推荐.*岗位|适合.*岗位|岗位.*推荐|帮我.*推荐|能投.*什么/.test(t)){streaming=false;const rt=t+'\n\n'+buildResumePrompt();const rr=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:rt})});if(rr.ok){const d=await rr.json();const rp=d.reply||(d.content||[]).filter(function(b){return b.type==='text'}).map(function(b){return b.text}).join('');if(rp){streamText(aiDiv,rp,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}}streamText(aiDiv,'抱歉，岗位推荐暂时不可用~',()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
-  // 投递进度：附申请数据发给DeepSeek
-  if(/我的.*(投递|进度|状态|应聘|到哪)|查.*(投递|进度|状态)|投递.*(进度|状态|到哪)/.test(t)){streaming=false;const st=t+'\n\n'+buildStatusPrompt();const sr=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:st})});if(sr.ok){const d=await sr.json();const rp=d.reply||(d.content||[]).filter(function(b){return b.type==='text'}).map(function(b){return b.text}).join('');if(rp){streamText(aiDiv,rp,()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}}streamText(aiDiv,statusAnswer(),()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
-  // 导航栏快捷问题：5个固定答案
+  // 导航栏快捷问题：5个固定答案，其余走DeepSeek
   if(FIXED_ANSWERS[t]){streamText(aiDiv,FIXED_ANSWERS[t],()=>{streaming=false;document.getElementById('send-btn').disabled=false;updateSendBtn();scrollChatBottom()});return}
-  // 其他问题：走DeepSeek
+  // 通过 SCF 云函数代理调用 AI（Key 在服务端，浏览器不暴露）
+  var API_URL='https://1459441179-0p55xhc9q1.ap-nanjing.tencentscf.com';
   try{
     const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})});
     if(resp.ok){
