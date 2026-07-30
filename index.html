@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=27')</script>
+<script>if(!location.search.includes('v='))location.replace(location.pathname+'?v=28')</script>
 <title>华小招 - 华泰证券校招AI助手</title>
 <style>
 :root{--primary:#0066CC;--primary-light:#E6F0FA;--primary-dark:#004C99;--text:#1A1A1A;--text2:#666;--hint:#999;--bg:#F5F7FA;--card:#FFF;--border:#E8E8E8;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -443,22 +443,14 @@ function doUnbind(){if(!confirm('确定要解绑投递账号吗？'))return;loca
 
 function getUserContext(){
   var ph=localStorage.getItem("bindPhone");if(!ph)return"";
-  var ctx="
-
-【当前用户上下文】手机号："+ph;
+  var ctx="\n\n【当前用户上下文】手机号："+ph;
   var r=RESUME_DATA[ph];if(r){
-    ctx+="
-姓名："+r.name;
-    for(var i=0;i<r.education.length;i++){var e=r.education[i];ctx+="
-"+e.degree+"："+e.school+" "+e.major+" "+e.time;}
-    ctx+="
-技能："+r.skills;
-    for(var j=0;j<r.internships.length;j++){var x=r.internships[j];ctx+="
-实习："+x.company+" "+x.role+" ("+x.time+")";}
+    ctx+="\n姓名："+r.name;
+    for(var i=0;i<r.education.length;i++){var e=r.education[i];ctx+="\n"+e.degree+"："+e.school+" "+e.major+" "+e.time;}
+    ctx+="\n技能："+r.skills;
+    for(var j=0;j<r.internships.length;j++){var x=r.internships[j];ctx+="\n实习："+x.company+" "+x.role+" ("+x.time+")";}
   }
-  if(demoApps&&demoApps.length){ctx+="
-投递记录：";for(var k=0;k<demoApps.length;k++){var a=demoApps[k];ctx+="
-- "+a.jobTitle+"（"+a.project+"）投递时间"+a.applyTime+" 状态："+a.status+" "+a.statusDetail;}}
+  if(demoApps&&demoApps.length){ctx+="\n投递记录：";for(var k=0;k<demoApps.length;k++){var a=demoApps[k];ctx+="\n- "+a.jobTitle+"（"+a.project+"）投递时间"+a.applyTime+" 状态："+a.status+" "+a.statusDetail;}}
   return ctx;
 }
 // ============ CHAT ============
